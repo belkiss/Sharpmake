@@ -1,6 +1,7 @@
 # Sharpmake
 
 ![build](https://github.com/ubisoft/Sharpmake/workflows/build/badge.svg)
+[![Coverity Scan](https://scan.coverity.com/projects/14185/badge.svg)](https://scan.coverity.com/projects/belkiss-sharpmake)
 
 ## Introduction
 Sharpmake is a generator for Visual Studio projects and solutions. It is
