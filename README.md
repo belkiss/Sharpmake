@@ -2,6 +2,7 @@
 
 ![build](https://github.com/ubisoft/Sharpmake/workflows/build/badge.svg)
 [![Coverity Scan](https://scan.coverity.com/projects/14185/badge.svg)](https://scan.coverity.com/projects/belkiss-sharpmake)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=SharpmakeFork)](https://sonarcloud.io/dashboard?id=SharpmakeFork)
 
 ## Introduction
 Sharpmake is a generator for Visual Studio projects and solutions. It is
