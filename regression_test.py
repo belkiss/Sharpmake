@@ -85,7 +85,7 @@ def find_assembly_path(directory, target):
     return find_target_path("samples", directory, target)
 
 def find_target_path(root_directory, subdirectory, target):
-    optim_tokens = ["debug", "release"]
+    optim_tokens = ["Debug", "Release"]
     for optim_token in optim_tokens:
         path = os.path.abspath(os.path.join("..", "tmp", root_directory, optim_token, subdirectory, target))
         if os.path.isfile(path):

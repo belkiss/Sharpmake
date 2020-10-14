@@ -2219,7 +2219,7 @@ namespace Sharpmake
                 if (!string.IsNullOrEmpty(BaseIntermediateOutputPath))
                     Util.ResolvePath(Project.SharpmakeCsPath, ref BaseIntermediateOutputPath);
                 Util.ResolvePath(Project.SharpmakeCsPath, ref LibraryPaths);
-                Util.ResolvePathAndFixCase(Project.SharpmakeCsPath, ref TargetCopyFiles);
+                Util.ResolvePath(Project.SharpmakeCsPath, ref TargetCopyFiles);
                 Util.ResolvePath(Project.SharpmakeCsPath, ref TargetDependsFiles);
                 Util.ResolvePath(Project.SharpmakeCsPath, ref TargetPath);
                 Util.ResolvePath(Project.SharpmakeCsPath, ref TargetLibraryPath);
