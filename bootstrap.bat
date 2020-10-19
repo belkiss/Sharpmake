@@ -10,9 +10,9 @@ set SHARPMAKE_EXECUTABLE=tmp\bin\debug\Sharpmake.Application\Sharpmake.Applicati
 
 call CompileSharpmake.bat Sharpmake.Application/Sharpmake.Application.csproj Debug AnyCPU
 if %errorlevel% NEQ 0 goto error
-set SHARPMAKE_MAIN="Sharpmake.Main.sharpmake.cs"
+set SHARPMAKE_MAIN='Sharpmake.Main.sharpmake.cs'
 if not "%~1" == "" (
-    set SHARPMAKE_MAIN="%~1"
+    set SHARPMAKE_MAIN='%~1'
 )
 
 set SM_CMD=%SHARPMAKE_EXECUTABLE% /sources(%SHARPMAKE_MAIN%) /verbose

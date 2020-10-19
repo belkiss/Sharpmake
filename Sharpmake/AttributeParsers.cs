@@ -15,6 +15,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection;
+//using Microsoft.Extensions.DependencyModel;
+//using Microsoft.Extensions.DependencyModel.Resolution;
 
 namespace Sharpmake
 {
@@ -131,6 +135,10 @@ namespace Sharpmake
             yield return Util.PathGetAbsolute(Directory.GetCurrentDirectory(), reference);
 
             // Try using .net framework locations
+
+            //var _assemblyResolver = new Microsoft.Extensions.DependencyModel.Resolution.ReferenceAssemblyPathResolver();
+            //_assemblyResolver.TryResolveAssemblyPaths(new CompilationLibrary(), )
+
             foreach (string frameworkDirectory in Assembler.EnumeratePathToDotNetFramework())
                 yield return Path.Combine(Path.Combine(frameworkDirectory, reference));
         }
@@ -157,6 +165,52 @@ namespace Sharpmake
                         break;
                     }
                 }
+
+                //if (!foundReference)
+                //{
+/*                var smAssembly = Assembly.GetExecutingAssembly().Location;
+
+                    var assResolver = new CompositeCompilationAssemblyResolver(
+                        new ICompilationAssemblyResolver[]
+                        {
+                            new AppBaseCompilationAssemblyResolver(),
+                            new ReferenceAssemblyPathResolver(),
+                            new PackageCompilationAssemblyResolver()
+                        });
+
+
+                    foreach (string depsFileName in Directory.GetFiles(Path.GetDirectoryName(smAssembly), "*.deps.json"))
+                    {
+                        DependencyContextJsonReader contextJsonReader = new DependencyContextJsonReader();
+                        var depsFile = File.OpenRead(depsFileName);
+                        var dependencyContext = contextJsonReader.Read(depsFile);
+
+                        var paths = dependencyContext.CompileLibraries.SelectMany(library => library.ResolveReferencePaths()).ToList();
+
+                    
+
+                    foreach (CompilationLibrary library in dependencyContext.CompileLibraries)
+                        {
+                            string resolvedPath = library.ResolveReferencePaths(assResolver).FirstOrDefault();
+                            if (!string.IsNullOrEmpty(resolvedPath))
+                            {
+                                context.AddReference(resolvedPath);
+                                foundReference = true;
+                            }
+                            //var wrapper = new CompilationLibrary(
+                            //    library.Type,
+                            //    library.Name,
+                            //    library.Version,
+                            //    library.Hash,
+                            //    library.RuntimeAssemblyGroups.SelectMany(g => g.AssetPaths),
+                            //    library.Dependencies,
+                            //    library.Serviceable);
+
+                            //assResolver.TryResolveAssemblyPaths()
+                        }
+                    }
+                //}
+*/
 
                 if (!foundReference)
                 {

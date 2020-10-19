@@ -172,7 +172,11 @@ namespace Sharpmake
             if (assemblyInfo.UseDefaultReferences)
             {
                 foreach (string defaultReference in Assembler.DefaultReferences)
-                    references.Add(Assembler.GetAssemblyDllPath(defaultReference));
+                {
+                    var dllPath = Assembler.GetAssemblyDllPath(defaultReference);
+                    if (dllPath != null)
+                        references.Add(dllPath);
+                }
             }
 
             foreach (var assemblerRef in assemblyInfo.References)
@@ -204,7 +208,7 @@ namespace Sharpmake
         {
             // define class type
             var assemblyName = new AssemblyName(typeSignature);
-            AssemblyBuilder assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
+            AssemblyBuilder assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
             ModuleBuilder moduleBuilder = assemblyBuilder.DefineDynamicModule("DebugSharpmakeModule");
             TypeBuilder typeBuilder = moduleBuilder.DefineType(typeSignature,
                 TypeAttributes.Public | TypeAttributes.Class |
@@ -230,7 +234,7 @@ namespace Sharpmake
                 OutputType.Dll,
                 Blob.NoBlob,
                 BuildSystem.MSBuild,
-                DotNetFramework.v4_7_2
+                DotNetFramework.netcore3_1
             );
         }
 
@@ -252,7 +256,7 @@ namespace Sharpmake
 
             conf.CsprojUserFile = new Project.Configuration.CsprojUserFileSettings();
             conf.CsprojUserFile.StartAction = Project.Configuration.CsprojUserFileSettings.StartActionSetting.Program;
-            string quote = Util.IsRunningInMono() ? @"\""" : @""""; // When running in Mono, we must escape "
+            string quote = Util.IsRunningInMono() ? @"\'" : @"'"; // When running in Mono, we must escape "
             conf.CsprojUserFile.StartArguments = $@"/sources(@{quote}{string.Join(";", MainSources)}{quote}) {startArguments}";
             conf.CsprojUserFile.StartProgram = sharpmakeApplicationExePath;
         }
@@ -306,6 +310,9 @@ namespace Sharpmake
             VsctExtension.Clear();
 
             Name = _projectInfo.DisplayName;
+
+            // prevents output dir to have a netstandard subfolder
+            CustomProperties.Add("AppendTargetFrameworkToOutputPath", "false");
 
             AddTargets(DebugProjectGenerator.GetTargets());
         }

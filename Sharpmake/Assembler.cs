@@ -25,6 +25,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
 using Microsoft.CodeAnalysis.Text;
+//using Microsoft.Extensions.DependencyModel;
+//using Microsoft.Extensions.DependencyModel.Resolution;
 using EmbeddedText = Microsoft.CodeAnalysis.EmbeddedText;
 
 namespace Sharpmake
@@ -63,7 +65,7 @@ namespace Sharpmake
 
         public bool UseDefaultReferences = true;
 
-        public static readonly string[] DefaultReferences = { "System.dll", "System.Core.dll" };
+        public static readonly string[] DefaultReferences = { typeof(object).Assembly.Location, "Microsoft.CSharp.dll", "System.dll", "System.Core.dll" };
 
         private class AssemblyInfo : IAssemblyInfo
         {
@@ -404,7 +406,11 @@ namespace Sharpmake
             if (UseDefaultReferences)
             {
                 foreach (string defaultReference in DefaultReferences)
-                    references.Add(GetAssemblyDllPath(defaultReference));
+                {
+                    var dllPath = GetAssemblyDllPath(defaultReference);
+                    if (dllPath != null)
+                        references.Add(dllPath);
+                }
             }
 
             foreach (string assemblyFile in _references)
@@ -422,26 +428,24 @@ namespace Sharpmake
         private SourceText ReadSourceCode(string path)
         {
             using (var stream = File.OpenRead(path))
-                return SourceText.From(stream, Encoding.Default, canBeEmbedded: true);
+                return SourceText.From(stream, Encoding.Default);
         }
 
         private Assembly Compile(IBuilderContext builderContext, string[] files, string libraryFile, HashSet<string> references)
         {
             // Parse all files
             var syntaxTrees = new ConcurrentBag<SyntaxTree>();
-            var embeddedTexts = new ConcurrentBag<EmbeddedText>();
             var parseOptions = new CSharpParseOptions(LanguageVersion.CSharp7, DocumentationMode.None, preprocessorSymbols: _defines);
             Parallel.ForEach(files, f =>
             {
                 var sourceText = ReadSourceCode(f);
                 syntaxTrees.Add(CSharpSyntaxTree.ParseText(sourceText, parseOptions, path: f));
-                embeddedTexts.Add(EmbeddedText.FromSource(f, sourceText));
             });
 
-            return Compile(builderContext, syntaxTrees, embeddedTexts, libraryFile, references);
+            return Compile(builderContext, syntaxTrees, libraryFile, references);
         }
 
-        private Assembly Compile(IBuilderContext builderContext, IEnumerable<SyntaxTree> syntaxTrees, IEnumerable<EmbeddedText> embeddedTexts, string libraryFile, HashSet<string> references)
+        private Assembly Compile(IBuilderContext builderContext, IEnumerable<SyntaxTree> syntaxTrees, string libraryFile, HashSet<string> references)
         {
             // Add references
             var portableExecutableReferences = new List<PortableExecutableReference>();
@@ -467,9 +471,8 @@ namespace Sharpmake
                 EmitResult result = compilation.Emit(
                     dllStream,
                     pdbStream,
-                    embeddedTexts: embeddedTexts,
                     options: new EmitOptions(
-                        debugInformationFormat: Util.IsRunningInMono() ? DebugInformationFormat.PortablePdb : DebugInformationFormat.Pdb,
+                        debugInformationFormat: Util.IsRunningOnUnix() ? DebugInformationFormat.PortablePdb : DebugInformationFormat.Pdb,
                         pdbFilePath: pdbFilePath
                     )
                 );
@@ -679,6 +682,11 @@ namespace Sharpmake
 
         public static IEnumerable<string> EnumeratePathToDotNetFramework()
         {
+            var trustedAssemblies = (AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES") as string).Split(Path.PathSeparator);
+            foreach (var trustedAssemblyPath in trustedAssemblies.Select(Path.GetDirectoryName).Distinct())
+                yield return trustedAssemblyPath;
+
+
             for (int i = (int)TargetDotNetFrameworkVersion.VersionLatest; i >= 0; --i)
             {
                 string frameworkDirectory = ToolLocationHelper.GetPathToDotNetFramework((TargetDotNetFrameworkVersion)i);
@@ -689,12 +697,46 @@ namespace Sharpmake
 
         public static string GetAssemblyDllPath(string fileName)
         {
+/*            var assResolver = new CompositeCompilationAssemblyResolver(new ICompilationAssemblyResolver[]
+            {
+                new AppBaseCompilationAssemblyResolver(Path.GetDirectoryName(fileName)),
+                new ReferenceAssemblyPathResolver(),
+                new PackageCompilationAssemblyResolver()
+            });
+
+            var smAssembly = Assembly.GetExecutingAssembly().Location;
+
+            foreach (string depsFileName in Directory.GetFiles(Path.GetDirectoryName(smAssembly), "*.deps.json"))
+            {
+                DependencyContextJsonReader contextJsonReader = new DependencyContextJsonReader();
+                var depsFile = File.OpenRead(depsFileName);
+                var dependencyContext = contextJsonReader.Read(depsFile);
+
+                foreach (CompilationLibrary library in dependencyContext.CompileLibraries)
+                {
+                    string resolvedPath = library.ResolveReferencePaths(assResolver).FirstOrDefault();
+                    if (!string.IsNullOrEmpty(resolvedPath))
+                        return resolvedPath;
+                    //var wrapper = new CompilationLibrary(
+                    //    library.Type,
+                    //    library.Name,
+                    //    library.Version,
+                    //    library.Hash,
+                    //    library.RuntimeAssemblyGroups.SelectMany(g => g.AssetPaths),
+                    //    library.Dependencies,
+                    //    library.Serviceable);
+
+                    //assResolver.TryResolveAssemblyPaths()
+                }
+            }
+*/
             foreach (string frameworkDirectory in EnumeratePathToDotNetFramework())
             {
                 string result = Path.Combine(frameworkDirectory, fileName);
                 if (File.Exists(result))
                     return result;
             }
+
             return null;
         }
 
@@ -767,6 +809,67 @@ namespace Sharpmake
             string tmpFile = Path.Combine(GetTmpAssemblyBasePath(), GetTmpAssemblyFilePrefix() + currentTempFile + tmpFileSuffix);
             return tmpFile;
         }
+
+        //internal sealed class AssemblyResolver : IDisposable
+        //{
+        //    private readonly ICompilationAssemblyResolver assemblyResolver;
+        //    private readonly DependencyContext dependencyContext;
+        //    //private readonly AssemblyLoadContext loadContext;
+
+        //    public AssemblyResolver(string path)
+        //    {
+        //        //this.Assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(path);
+        //        //this.dependencyContext = DependencyContext.Load(this.Assembly);
+
+        //        this.assemblyResolver = new CompositeCompilationAssemblyResolver(new ICompilationAssemblyResolver[]
+        //        {
+        //            new AppBaseCompilationAssemblyResolver(Path.GetDirectoryName(path)),
+        //            new ReferenceAssemblyPathResolver(),
+        //            new PackageCompilationAssemblyResolver()
+        //        });
+
+        //        //this.loadContext = AssemblyLoadContext.GetLoadContext(this.Assembly);
+        //        //this.loadContext.Resolving += OnResolving;
+        //    }
+
+        //    public Assembly Assembly { get; }
+
+        //    public void Dispose()
+        //    {
+        //        //this.loadContext.Resolving -= this.OnResolving;
+        //    }
+
+        //    //private Assembly OnResolving(AssemblyLoadContext context, AssemblyName name)
+        //    //{
+        //    //    bool NamesMatch(RuntimeLibrary runtime)
+        //    //    {
+        //    //        return string.Equals(runtime.Name, name.Name, StringComparison.OrdinalIgnoreCase);
+        //    //    }
+
+        //    //    RuntimeLibrary library =
+        //    //        this.dependencyContext.RuntimeLibraries.FirstOrDefault(NamesMatch);
+        //    //    if (library != null)
+        //    //    {
+        //    //        var wrapper = new CompilationLibrary(
+        //    //            library.Type,
+        //    //            library.Name,
+        //    //            library.Version,
+        //    //            library.Hash,
+        //    //            library.RuntimeAssemblyGroups.SelectMany(g => g.AssetPaths),
+        //    //            library.Dependencies,
+        //    //            library.Serviceable);
+
+        //    //        var assemblies = new List<string>();
+        //    //        this.assemblyResolver.TryResolveAssemblyPaths(wrapper, assemblies);
+        //    //        if (assemblies.Count > 0)
+        //    //        {
+        //    //            return this.loadContext.LoadFromAssemblyPath(assemblies[0]);
+        //    //        }
+        //    //    }
+
+        //    //    return null;
+        //    //}
+        //}
 
         #endregion
     }
