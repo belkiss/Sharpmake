@@ -30,6 +30,7 @@ namespace SharpmakeGen
             conf.ReferencesByNuGetPackage.Add("Microsoft.CodeAnalysis.CSharp", "3.7.0");
             conf.ReferencesByNuGetPackage.Add("Microsoft.DiaSymReader.Native", "1.7.0");
             conf.ReferencesByNuGetPackage.Add("Microsoft.VisualStudio.Setup.Configuration.Interop", "2.3.2262-g94fae01e");
+            conf.ReferencesByNuGetPackage.Add("Microsoft.Win32.Registry", "4.7.0");
         }
     }
 }
