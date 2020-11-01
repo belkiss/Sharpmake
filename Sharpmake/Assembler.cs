@@ -14,9 +14,11 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,6 +27,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
 using Microsoft.CodeAnalysis.Text;
+using Microsoft.Extensions.DependencyModel;
+using Microsoft.Extensions.DependencyModel.Resolution;
 //using Microsoft.Extensions.DependencyModel;
 //using Microsoft.Extensions.DependencyModel.Resolution;
 using EmbeddedText = Microsoft.CodeAnalysis.EmbeddedText;
@@ -445,6 +449,50 @@ namespace Sharpmake
             return Compile(builderContext, syntaxTrees, libraryFile, references);
         }
 
+        private class MetadataReferenceResolver : Microsoft.CodeAnalysis.MetadataReferenceResolver
+        {
+            public override bool Equals(object other)
+            {
+                return other.Equals(this);
+            }
+
+            public override int GetHashCode()
+            {
+                return 0;
+            }
+
+            public override bool ResolveMissingAssemblies => true;
+
+            public override ImmutableArray<PortableExecutableReference> ResolveReference(string reference, string baseFilePath, MetadataReferenceProperties properties)
+            {
+                Util.LogWrite("ResolveReference '{0}' filepath '{1}'", reference ?? string.Empty, baseFilePath ?? string.Empty);
+                return ImmutableArray<PortableExecutableReference>.Empty;
+            }
+
+            public override PortableExecutableReference ResolveMissingAssembly(MetadataReference definition, AssemblyIdentity referenceIdentity)
+            {
+                var assemblyName = new AssemblyName(referenceIdentity.Name)
+                {
+                    ContentType = referenceIdentity.ContentType,
+                    CultureName = referenceIdentity.CultureName,
+                    Flags = referenceIdentity.Flags,
+                    Version = referenceIdentity.Version
+                };
+
+
+                var path = GetAssemblyDllPath(referenceIdentity.Name + ".dll");
+                if (path != null)
+                {
+                    path = Util.GetCapitalizedPath(path);
+                    Util.LogWrite("SUCCESS ResolveMissingAssembly refIdentity '{1}' => '{2}'", definition.Display, referenceIdentity, path);
+                    return MetadataReference.CreateFromFile(path);
+                }
+
+                Util.LogWrite("FAILED  ResolveMissingAssembly refIdentity '{1}'", definition.Display, referenceIdentity);
+                return base.ResolveMissingAssembly(definition, referenceIdentity);
+            }
+        }
+
         private Assembly Compile(IBuilderContext builderContext, IEnumerable<SyntaxTree> syntaxTrees, string libraryFile, HashSet<string> references)
         {
             // Add references
@@ -455,11 +503,19 @@ namespace Sharpmake
                 portableExecutableReferences.Add(MetadataReference.CreateFromFile(reference));
             }
 
+#if DEBUG
+            var optimLevel = OptimizationLevel.Debug;
+#else
+            var optimLevel = OptimizationLevel.Release;
+#endif
+            var metadataReferenceResolver = new MetadataReferenceResolver() { };
+
             // Compile
             var compilationOptions = new CSharpCompilationOptions(
                 OutputKind.DynamicallyLinkedLibrary,
-                optimizationLevel: OptimizationLevel.Release,
-                warningLevel: 4
+                optimizationLevel: optimLevel,
+                warningLevel: 4,
+                metadataReferenceResolver: metadataReferenceResolver
             );
             var assemblyName = libraryFile != null ? Path.GetFileNameWithoutExtension(libraryFile) : $"Sharpmake_{new Random().Next():X8}" + GetHashCode();
             var compilation = CSharpCompilation.Create(assemblyName, syntaxTrees, portableExecutableReferences, compilationOptions);
@@ -697,7 +753,14 @@ namespace Sharpmake
 
         public static string GetAssemblyDllPath(string fileName)
         {
-/*            var assResolver = new CompositeCompilationAssemblyResolver(new ICompilationAssemblyResolver[]
+            foreach (string frameworkDirectory in EnumeratePathToDotNetFramework())
+            {
+                string result = Path.Combine(frameworkDirectory, fileName);
+                if (File.Exists(result))
+                    return result;
+            }
+
+            var assResolver = new CompositeCompilationAssemblyResolver(new ICompilationAssemblyResolver[]
             {
                 new AppBaseCompilationAssemblyResolver(Path.GetDirectoryName(fileName)),
                 new ReferenceAssemblyPathResolver(),
@@ -706,35 +769,66 @@ namespace Sharpmake
 
             var smAssembly = Assembly.GetExecutingAssembly().Location;
 
+            var pkgResolver = new PackageCompilationAssemblyResolver();
+
             foreach (string depsFileName in Directory.GetFiles(Path.GetDirectoryName(smAssembly), "*.deps.json"))
             {
-                DependencyContextJsonReader contextJsonReader = new DependencyContextJsonReader();
+                var contextJsonReader = new DependencyContextJsonReader();
                 var depsFile = File.OpenRead(depsFileName);
                 var dependencyContext = contextJsonReader.Read(depsFile);
 
                 foreach (CompilationLibrary library in dependencyContext.CompileLibraries)
                 {
-                    string resolvedPath = library.ResolveReferencePaths(assResolver).FirstOrDefault();
-                    if (!string.IsNullOrEmpty(resolvedPath))
-                        return resolvedPath;
-                    //var wrapper = new CompilationLibrary(
-                    //    library.Type,
-                    //    library.Name,
-                    //    library.Version,
-                    //    library.Hash,
-                    //    library.RuntimeAssemblyGroups.SelectMany(g => g.AssetPaths),
-                    //    library.Dependencies,
-                    //    library.Serviceable);
+                    if (library.Name + ".dll" != fileName)
+                        continue;
 
-                    //assResolver.TryResolveAssemblyPaths()
+                    foreach (var runtimeLib in dependencyContext.RuntimeLibraries)
+                    {
+                        if (runtimeLib.Name + ".dll" != fileName)
+                            continue;
+
+                        var newCompilLib = new CompilationLibrary(
+                            library.Type,
+                            library.Name,
+                            library.Version,
+                            library.Hash,
+                            runtimeLib.RuntimeAssemblyGroups.GetDefaultAssets(),
+                            library.Dependencies,
+                            library.Serviceable,
+                            library.Path,
+                            library.HashPath
+                        );
+
+                        string resolvedPath = newCompilLib.ResolveReferencePaths(assResolver).FirstOrDefault();
+                        if (!string.IsNullOrEmpty(resolvedPath))
+                            return resolvedPath;
+                    }
                 }
-            }
-*/
-            foreach (string frameworkDirectory in EnumeratePathToDotNetFramework())
-            {
-                string result = Path.Combine(frameworkDirectory, fileName);
-                if (File.Exists(result))
-                    return result;
+
+                //var assList = new List<string>();
+                //    assResolver.TryResolveAssemblyPaths(library, assList);
+                //    string resolvedPath = library.ResolveReferencePaths(assResolver).FirstOrDefault();
+                //    if (!string.IsNullOrEmpty(resolvedPath))
+                //        return resolvedPath;
+
+                //    pkgResolver.TryResolveAssemblyPaths(library, assList);
+                //    //var wrapper = new CompilationLibrary(
+                //    //    library.Type,
+                //    //    library.Name,
+                //    //    library.Version,
+                //    //    library.Hash,
+                //    //    library.RuntimeAssemblyGroups.SelectMany(g => g.AssetPaths),
+                //    //    library.Dependencies,
+                //    //    library.Serviceable);
+
+                //    //assResolver.TryResolveAssemblyPaths()
+
+
+
+                //    string resolvedPath = runtimeLib.RuntimeAssemblyGroups;
+                //    if (!string.IsNullOrEmpty(resolvedPath))
+                //        return resolvedPath;
+                //}
             }
 
             return null;
