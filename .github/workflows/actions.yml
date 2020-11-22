@@ -1,0 +1,42 @@
+# Sharpmake GitHub Actions CI configuration
+
+name: build
+on: [push]
+jobs:
+  unix_build:
+      runs-on: ${{ matrix.os }}
+      strategy:
+        matrix:
+          os: [ubuntu-latest, macos-latest]
+          configuration: [Debug, Release]
+      steps:
+        - name: Install .NET Core 5
+          uses: actions/setup-dotnet@v1
+          with:
+            dotnet-version: 5.0.100
+        - uses: actions/checkout@v2
+        - name: Bootstrap
+          shell: bash
+          run: ./bootstrap.sh
+        - name: Build
+          shell: bash
+          run: ./CompileSharpmake.sh Sharpmake.sln "${{ matrix.configuration }}"
+
+  win_build:
+      runs-on: windows-latest
+      strategy:
+        matrix:
+          configuration: [Debug, Release]
+      steps:
+        - uses: actions/checkout@v2
+        - name: Bootstrap
+          shell: cmd
+          run: bootstrap.bat
+        - name: Build
+          shell: cmd
+          run: CompileSharpmake.bat Sharpmake.sln "${{ matrix.configuration }}" "Any CPU"
+        - name: UnitTest
+          run: dotnet test tmp/bin/${{ matrix.configuration }}/Sharpmake.UnitTests/Sharpmake.UnitTests.dll
+        - name: RegressionTest
+          run: python regression_test.py
+
