@@ -33,7 +33,7 @@ namespace SharpmakeGen
             conf.ReferencesByNuGetPackage.Add("NUnit", "3.12.0");
 
             conf.ReferencesByNuGetPackage.Add("NUnit3TestAdapter", "3.17.0");
-            conf.ReferencesByNuGetPackage.Add("Microsoft.NET.Test.Sdk", "16.7.1");
+            conf.ReferencesByNuGetPackage.Add("Microsoft.NET.Test.Sdk", "16.8.0");
 
             conf.ReferencesByNuGetPackage.Add("NUnit.Console", "3.11.1");
         }
