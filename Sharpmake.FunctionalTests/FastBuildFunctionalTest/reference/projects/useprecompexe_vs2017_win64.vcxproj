@@ -365,9 +365,9 @@ del "output\release_fastbuild_vs2017\useprecompexe.pdb" >NUL 2>NUL</NMakeCleanCo
   <ItemGroup>
     <ClInclude Include="..\codebase\UsePrecompExe\noprecomp_util.h" />
     <ClInclude Include="..\codebase\UsePrecompExe\precomp.h" />
+    <ClInclude Include="..\codebase\UsePrecompExe\util.h" />
     <ClInclude Include="..\codebase\UsePrecompExe\util_noprecomp_excludedbyextension.h" />
     <ClInclude Include="..\codebase\UsePrecompExe\util_withprecomp_weirdextension.h" />
-    <ClInclude Include="..\codebase\UsePrecompExe\util.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\codebase\UsePrecompExe\main.cpp" />
@@ -387,6 +387,7 @@ del "output\release_fastbuild_vs2017\useprecompexe.pdb" >NUL 2>NUL</NMakeCleanCo
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_FastBuild_vs2017|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_MSBuild_vs2017|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\codebase\UsePrecompExe\util.cpp" />
     <ClCompile Include="..\codebase\UsePrecompExe\util_noprecomp_excludedbyextension.ceepeepee">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug_FastBuild_NoBlob_vs2017|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug_FastBuild_vs2017|x64'">NotUsing</PrecompiledHeader>
@@ -396,7 +397,6 @@ del "output\release_fastbuild_vs2017\useprecompexe.pdb" >NUL 2>NUL</NMakeCleanCo
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_MSBuild_vs2017|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\codebase\UsePrecompExe\util_withprecomp_weirdextension.ceecee" />
-    <ClCompile Include="..\codebase\UsePrecompExe\util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="useprecompexe_vs2017_win64.bff" />
