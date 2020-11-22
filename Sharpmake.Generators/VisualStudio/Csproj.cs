@@ -141,7 +141,7 @@ namespace Sharpmake.Generators.VisualStudio
 
                     var writer = new StringWriter();
                     var resolvedAlwaysTrueCondition = AlwaysTrueElement?.ResolveCondition(resolver);
-                    foreach (var conditionalItemGroup in conditionalItemGroups.OrderBy(k => k.Key, StringComparer.InvariantCultureIgnoreCase))
+                    foreach (var conditionalItemGroup in conditionalItemGroups.OrderBy(k => k.Key, StringComparer.OrdinalIgnoreCase))
                     {
                         // No element for this ItemGroup, skip
                         if (!conditionalItemGroup.Value.Any())
@@ -157,7 +157,7 @@ namespace Sharpmake.Generators.VisualStudio
                                 writer.Write(resolver.Resolve(Template.ItemGroups.ItemGroupConditionalBegin));
                         }
 
-                        foreach (var elem in conditionalItemGroup.Value.OrderBy(v => v, StringComparer.InvariantCultureIgnoreCase))
+                        foreach (var elem in conditionalItemGroup.Value.OrderBy(v => v, StringComparer.OrdinalIgnoreCase))
                             writer.Write(elem);
 
                         writer.Write(Template.ItemGroups.ItemGroupEnd);
@@ -1737,7 +1737,7 @@ namespace Sharpmake.Generators.VisualStudio
                             itemGroups.Pages.Add(new ItemGroups.Page
                             {
                                 Include = xaml,
-                                IsApplicationDefinition = project.ApplicationDefinitionFilenames.Any(f => f.Equals(Path.GetFileName(xaml), StringComparison.InvariantCultureIgnoreCase)),
+                                IsApplicationDefinition = project.ApplicationDefinitionFilenames.Any(f => f.Equals(Path.GetFileName(xaml), StringComparison.OrdinalIgnoreCase)),
                                 LinkFolder = GetProjectLinkedFolder(xaml, _projectPathCapitalized, project)
                             });
                             remainingSourcesFiles.Remove(xaml);
@@ -1838,7 +1838,7 @@ namespace Sharpmake.Generators.VisualStudio
                         {
                             string designerFile = fileAssociation.GetFilenameWithExtension(".designer.cs");
                             string resXFile = fileAssociation.GetFilenameWithExtension(".resx");
-                            bool publicAccessModifiers = publicResources.Any(f => f.Equals(resXFile, StringComparison.InvariantCultureIgnoreCase));
+                            bool publicAccessModifiers = publicResources.Any(f => f.Equals(resXFile, StringComparison.OrdinalIgnoreCase));
                             itemGroups.Compiles.Add(new ItemGroups.Compile
                             {
                                 Include = designerFile,
@@ -1851,7 +1851,7 @@ namespace Sharpmake.Generators.VisualStudio
                             {
                                 Include = resXFile,
                                 Generator = publicAccessModifiers ? "PublicResXFileCodeGenerator" : "ResXFileCodeGenerator",
-                                MergeWithCto = resXFile.EndsWith("VSPackage.resx", StringComparison.InvariantCultureIgnoreCase) ? "true" : null,
+                                MergeWithCto = resXFile.EndsWith("VSPackage.resx", StringComparison.OrdinalIgnoreCase) ? "true" : null,
                                 LastGenOutput = Path.GetFileName(designerFile),
                                 LinkFolder = GetProjectLinkedFolder(resXFile, _projectPathCapitalized, project),
                                 SubType = "Designer"
@@ -2143,7 +2143,7 @@ namespace Sharpmake.Generators.VisualStudio
                 itemGroups.Pages.Add(new ItemGroups.Page
                 {
                     Include = xaml,
-                    IsApplicationDefinition = project.ApplicationDefinitionFilenames.Any(f => f.Equals(xaml, StringComparison.InvariantCultureIgnoreCase)),
+                    IsApplicationDefinition = project.ApplicationDefinitionFilenames.Any(f => f.Equals(xaml, StringComparison.OrdinalIgnoreCase)),
                     LinkFolder = GetProjectLinkedFolder(xaml, _projectPathCapitalized, project)
                 });
                 remainingSourcesFiles.Remove(xaml);
@@ -2188,7 +2188,7 @@ namespace Sharpmake.Generators.VisualStudio
                 itemGroups.EmbeddedResources.Add(new ItemGroups.EmbeddedResource
                 {
                     Include = file,
-                    MergeWithCto = file.Equals("VSPackage.resx", StringComparison.InvariantCultureIgnoreCase) ? "true" : null,
+                    MergeWithCto = file.Equals("VSPackage.resx", StringComparison.OrdinalIgnoreCase) ? "true" : null,
                     LinkFolder = project.GetLinkFolder(file)
                 });
             }

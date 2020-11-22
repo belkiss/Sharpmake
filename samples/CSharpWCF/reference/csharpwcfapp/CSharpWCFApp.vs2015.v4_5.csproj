@@ -47,6 +47,9 @@
     <Reference Include="Microsoft.CSharp">
       <Private>False</Private>
     </Reference>
+    <Reference Include="System">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System.Configuration">
       <Private>False</Private>
     </Reference>
@@ -65,10 +68,13 @@
     <Reference Include="System.Runtime.Serialization">
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.ServiceModel">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System.ServiceModel.Web">
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.ServiceModel">
+    <Reference Include="System.Web">
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Web.ApplicationServices">
@@ -86,16 +92,10 @@
     <Reference Include="System.Web.Services">
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.Web">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Xml.Linq">
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System.Xml">
       <Private>False</Private>
     </Reference>
-    <Reference Include="System">
+    <Reference Include="System.Xml.Linq">
       <Private>False</Private>
     </Reference>
   </ItemGroup>
