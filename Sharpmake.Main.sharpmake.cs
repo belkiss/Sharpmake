@@ -55,6 +55,10 @@ namespace SharpmakeGen
                 // prevents output dir to have a netstandard subfolder
                 CustomProperties.Add("AppendTargetFrameworkToOutputPath", "false");
 
+                // Enable Globalization Invariant Mode
+                // https://github.com/dotnet/runtime/blob/master/docs/design/features/globalization-invariant-mode.md
+                CustomProperties.Add("InvariantGlobalization", "true");
+
                 if (excludeSharpmakeFiles)
                     SourceFilesExcludeRegex.Add(@".*\.sharpmake.cs");
             }
