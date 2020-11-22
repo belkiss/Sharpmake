@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -49,6 +49,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <LangVersion>7</LangVersion>
   </PropertyGroup>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
   <ItemGroup>
     <Compile Include="CommandLineArguments.cs" />
     <Compile Include="Program.cs" />
@@ -72,4 +73,5 @@
       <Name>Sharpmake</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
 </Project>

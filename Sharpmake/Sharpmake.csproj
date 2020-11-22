@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -52,6 +52,7 @@
     <NoWarn>1570,1591</NoWarn>
     <LangVersion>7</LangVersion>
   </PropertyGroup>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
   <ItemGroup>
     <Compile Include="Analyzer/Analyzer.cs" />
     <Compile Include="Assembler.cs" />
@@ -136,4 +137,5 @@
     <PackageReference Include="System.Collections.Immutable" Version="1.7.1" />
     <PackageReference Include="System.Reflection.Metadata" Version="1.7.0" />
   </ItemGroup>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
 </Project>

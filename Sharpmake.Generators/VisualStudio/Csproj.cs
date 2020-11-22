@@ -1117,22 +1117,17 @@ namespace Sharpmake.Generators.VisualStudio
                                             (project.ProjectSchema == CSharpProjectSchema.Default &&
                                               (projectFrameworks.Any(x => x.IsDotNetCore() || x.IsDotNetStandard()) || projectFrameworks.Count > 1)
                                             );
+
             if (isNetCoreProjectSchema)
             {
+                Write(Template.Project.ProjectBeginNetCore, writer, resolver);
+
                 targetFrameworkString = String.Join(";", projectFrameworks.Select(conf => conf.ToFolderName()));
-
-                string netCoreSdk = "Microsoft.NET.Sdk";
-                if (project.NetCoreSdkType != NetCoreSdkTypes.Default)
-                    netCoreSdk += "." + project.NetCoreSdkType.ToString();
-
-                using (resolver.NewScopedParameter("sdkVersion", netCoreSdk))
-                {
-                    Write(Template.Project.ProjectBeginNetCore, writer, resolver);
-                }
             }
             else
             {
                 targetFrameworkString = Util.GetDotNetTargetString(projectFrameworks.Single());
+
                 using (resolver.NewScopedParameter("toolsVersion", Util.GetToolVersionString(devenv, projectFrameworks.Single())))
                 {
                     // xml begin header
@@ -1392,6 +1387,18 @@ namespace Sharpmake.Generators.VisualStudio
                     Write(Template.Project.ProjectConfigurationsRunPostBuildEvent, writer, resolver);
             }
 
+            string netCoreSdk = null;
+            if (isNetCoreProjectSchema)
+            {
+                netCoreSdk = "Microsoft.NET.Sdk";
+                if (project.NetCoreSdkType != NetCoreSdkTypes.Default)
+                    netCoreSdk += "." + project.NetCoreSdkType.ToString();
+
+                using (resolver.NewScopedParameter("importProject", "Sdk.props"))
+                using (resolver.NewScopedParameter("sdkVersion", netCoreSdk))
+                    Write(Template.Project.ImportProjectSdkItem, writer, resolver);
+            }
+
             GenerateFiles(project, configurations, itemGroups, generatedFiles, skipFiles);
 
             #region <Choose> section
@@ -1496,6 +1503,14 @@ namespace Sharpmake.Generators.VisualStudio
             }
 
             WriteEvents(options, writer, resolver);
+
+            if (isNetCoreProjectSchema)
+            {
+                using (resolver.NewScopedParameter("importProject", "Sdk.targets"))
+                using (resolver.NewScopedParameter("sdkVersion", netCoreSdk))
+                    Write(Template.Project.ImportProjectSdkItem, writer, resolver);
+            }
+
             Write(Template.Project.ProjectEnd, writer, resolver);
 
             // Write the project file
