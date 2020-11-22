@@ -10,10 +10,10 @@ jobs:
           os: [ubuntu-latest, macos-latest]
           configuration: [Debug, Release]
       steps:
-        - name: Install .NET Core 3.1
+        - name: Install .NET Core 5
           uses: actions/setup-dotnet@v1
           with:
-            dotnet-version: 3.1.404
+            dotnet-version: 5.0.100
         - uses: actions/checkout@v2
         - name: Bootstrap
           shell: bash

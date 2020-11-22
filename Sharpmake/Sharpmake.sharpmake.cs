@@ -20,12 +20,12 @@ namespace SharpmakeGen
         public override void ConfigureAll(Configuration conf, Target target)
         {
             base.ConfigureAll(conf, target);
+            conf.ProjectPath = @"[project.SourceRootPath]";
 
             conf.Options.Add(Options.CSharp.AllowUnsafeBlocks.Enabled);
             conf.ReferencesByNuGetPackage.Add("System.Collections.Immutable", "1.7.1");
             conf.ReferencesByNuGetPackage.Add("System.Reflection.Metadata", "1.7.0");
 
-            conf.ReferencesByNuGetPackage.Add("JetBrains.Annotations", "2020.1.0");
             conf.ReferencesByNuGetPackage.Add("Microsoft.Build.Utilities.Core", "16.7.0");
             conf.ReferencesByNuGetPackage.Add("Microsoft.CodeAnalysis.CSharp", "3.7.0");
             conf.ReferencesByNuGetPackage.Add("Microsoft.DiaSymReader.Native", "1.7.0");

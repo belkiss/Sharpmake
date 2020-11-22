@@ -12,10 +12,14 @@ function error {
 
 CURRENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
-# workaround for https://github.com/mono/mono/issues/6752
-TERM=xterm
-
 SHARPMAKE_MAIN="${1:-"$CURRENT_DIR/Sharpmake.Main.sharpmake.cs"}"
+
+which dotnet > /dev/null
+DOTNET_FOUND=$?
+if [ $DOTNET_FOUND -ne 0 ]; then
+    echo "dotnet not found, see https://dotnet.microsoft.com/download"
+    error
+fi
 
 echo "Build and run sharpmake..."
 
@@ -23,13 +27,10 @@ SM_CMD_RUN="dotnet run --verbosity m --project Sharpmake.Application/Sharpmake.A
 echo $SM_CMD_RUN
 eval $SM_CMD_RUN
 if [ $? -ne 0 ]; then
-    echo "DotNet run failed, falling back to old way..."
+    echo "DotNet run failed, trying to fallback to the old way..."
     $CURRENT_DIR/CompileSharpmake.sh $CURRENT_DIR/Sharpmake.Application/Sharpmake.Application.csproj Debug AnyCPU
     if [ $? -ne 0 ]; then
-        echo "The build has failed."
-        if [ -f $SHARPMAKE_EXECUTABLE ]; then
-            echo "A previously built sharpmake exe was found at '${SHARPMAKE_EXECUTABLE}', it will be reused."
-        fi
+        error
     fi
 
     echo "Generating Sharpmake solution..."

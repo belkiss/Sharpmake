@@ -234,7 +234,7 @@ namespace Sharpmake
                 OutputType.Dll,
                 Blob.NoBlob,
                 BuildSystem.MSBuild,
-                DotNetFramework.netcore3_1
+                DotNetFramework.net5_0
             );
         }
 
@@ -256,7 +256,7 @@ namespace Sharpmake
 
             conf.CsprojUserFile = new Project.Configuration.CsprojUserFileSettings();
             conf.CsprojUserFile.StartAction = Project.Configuration.CsprojUserFileSettings.StartActionSetting.Program;
-            string quote = Util.IsRunningInMono() ? @"\'" : @"'"; // When running in Mono, we must escape "
+            string quote = "\'"; // Use single quote that is cross platform safe
             conf.CsprojUserFile.StartArguments = $@"/sources(@{quote}{string.Join(";", MainSources)}{quote}) {startArguments}";
             conf.CsprojUserFile.StartProgram = sharpmakeApplicationExePath;
         }

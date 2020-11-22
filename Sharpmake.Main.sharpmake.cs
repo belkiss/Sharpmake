@@ -23,13 +23,13 @@ namespace SharpmakeGen
 
     public static class Common
     {
-        public static DotNetFramework DefaultLibDotNetFramework => DotNetFramework.netstandard2_1;
+        public static DotNetFramework DefaultLibDotNetFramework => DotNetFramework.net5_0;
         public static ITarget[] GetDefaultLibTargets()
         {
             return GetDefaultTarget(DefaultLibDotNetFramework);
         }
 
-        public static DotNetFramework DefaultAppDotNetFramework => DotNetFramework.netcore3_1;
+        public static DotNetFramework DefaultAppDotNetFramework => DotNetFramework.net5_0;
         public static ITarget[] GetDefaultAppTargets()
         {
             return GetDefaultTarget(DefaultAppDotNetFramework);
@@ -75,7 +75,7 @@ namespace SharpmakeGen
             public virtual void ConfigureAll(Configuration conf, Target target)
             {
                 conf.ProjectFileName = "[project.Name]";
-                conf.ProjectPath = @"[project.SourceRootPath]";
+                conf.ProjectPath = @"[project.RootPath]\tmp\projects\[project.Name]";
                 conf.Output = Configuration.OutputType.DotNetClassLibrary;
                 conf.TargetPath = @"[project.RootPath]\tmp\bin\[target.Optimization]\[project.Name]";
 

@@ -700,7 +700,7 @@ namespace Sharpmake
 
         private static void GetProperDirectoryCapitalization(DirectoryInfo dirInfo, DirectoryInfo childInfo, ref StringBuilder pathBuilder)
         {
-            string lowerPath = dirInfo.FullName.ToLower();
+            string lowerPath = dirInfo.FullName.ToLowerInvariant();
             string capitalizedPath;
             if (s_capitalizedPaths.TryGetValue(lowerPath, out capitalizedPath))
             {
@@ -938,33 +938,33 @@ namespace Sharpmake
             Dictionary<string, DateTime> dbFiles = null;
             if (File.Exists(databaseFilename))
             {
-                try
-                {
-                    // Read database - This is simply a simple binary file containing the list of file and a version number.
-                    using (Stream readStream = new FileStream(databaseFilename, FileMode.Open, FileAccess.Read, FileShare.None))
-                    using (BinaryReader binReader = new BinaryReader(readStream))
-                    {
-                        // Validate version number
-                        int version = binReader.ReadInt32();
-                        if (version == (int)DBVersion.Version)
-                        {
-                            // Read the list of files.
-                            IFormatter formatter = new BinaryFormatter();
-                            var tmpDbFiles = (Dictionary<string, DateTime>)formatter.Deserialize(readStream);
-                            dbFiles = tmpDbFiles.ToDictionary(kvp => kvp.Key, kvp => kvp.Value, StringComparer.InvariantCultureIgnoreCase);
-                        }
-                        else if (version == 1)
-                        {
-                            IFormatter formatter = new BinaryFormatter();
-                            ConcurrentDictionary<string, bool> dbFilesV1 = (ConcurrentDictionary<string, bool>)formatter.Deserialize(readStream);
-                            DateTime now = DateTime.Now;
-                            dbFiles = dbFilesV1.ToDictionary(kvp => kvp.Key, kvp => now);
-                        }
+                //try
+                //{
+                //    // Read database - This is simply a simple binary file containing the list of file and a version number.
+                //    using (Stream readStream = new FileStream(databaseFilename, FileMode.Open, FileAccess.Read, FileShare.None))
+                //    using (BinaryReader binReader = new BinaryReader(readStream))
+                //    {
+                //        // Validate version number
+                //        int version = binReader.ReadInt32();
+                //        if (version == (int)DBVersion.Version)
+                //        {
+                //            // Read the list of files.
+                //            IFormatter formatter = new BinaryFormatter();
+                //            var tmpDbFiles = (Dictionary<string, DateTime>)formatter.Deserialize(readStream);
+                //            dbFiles = tmpDbFiles.ToDictionary(kvp => kvp.Key, kvp => kvp.Value, StringComparer.InvariantCultureIgnoreCase);
+                //        }
+                //        else if (version == 1)
+                //        {
+                //            IFormatter formatter = new BinaryFormatter();
+                //            ConcurrentDictionary<string, bool> dbFilesV1 = (ConcurrentDictionary<string, bool>)formatter.Deserialize(readStream);
+                //            DateTime now = DateTime.Now;
+                //            dbFiles = dbFilesV1.ToDictionary(kvp => kvp.Key, kvp => now);
+                //        }
 
-                        readStream.Close();
-                    }
-                }
-                catch (SerializationException)
+                //        readStream.Close();
+                //    }
+                //}
+                //catch (SerializationException)
                 {
                     // File is likely corrupted.
                     // This is no big deal except that cleanup won't occur.
@@ -1106,8 +1106,8 @@ namespace Sharpmake
                     binWriter.Flush();
 
                     // Write the list of files.
-                    IFormatter formatter = new BinaryFormatter();
-                    formatter.Serialize(writeStream, newDbFiles);
+                    //IFormatter formatter = new BinaryFormatter();
+                    //formatter.Serialize(writeStream, newDbFiles);
                 }
             }
             else
@@ -1137,8 +1137,8 @@ namespace Sharpmake
 
             using (Stream writeStream = new FileStream(winFormSubTypesDbFullPath, FileMode.Create, FileAccess.Write, FileShare.None))
             {
-                BinaryFormatter binaryFormatter = new BinaryFormatter();
-                binaryFormatter.Serialize(writeStream, allCsProjSubTypes);
+                //BinaryFormatter binaryFormatter = new BinaryFormatter();
+                //binaryFormatter.Serialize(writeStream, allCsProjSubTypes);
             }
         }
 
@@ -1153,8 +1153,8 @@ namespace Sharpmake
             {
                 using (Stream readStream = new FileStream(winFormSubTypesDbFullPath, FileMode.Open, FileAccess.Read, FileShare.None))
                 {
-                    BinaryFormatter binaryFormatter = new BinaryFormatter();
-                    return binaryFormatter.Deserialize(readStream);
+                    //BinaryFormatter binaryFormatter = new BinaryFormatter();
+                    //return binaryFormatter.Deserialize(readStream);
                 }
             }
             catch
