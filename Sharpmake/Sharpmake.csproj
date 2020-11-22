@@ -21,10 +21,10 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>../tmp/bin/Debug/Sharpmake</OutputPath>
-    <IntermediateOutputPath>../tmp/obj/Debug/Sharpmake</IntermediateOutputPath>
-    <BaseIntermediateOutputPath>../tmp/obj/Debug/Sharpmake</BaseIntermediateOutputPath>
-    <DocumentationFile>../tmp/bin/Debug/Sharpmake/Sharpmake.xml</DocumentationFile>
+    <OutputPath>..\tmp\bin\debug\sharpmake</OutputPath>
+    <IntermediateOutputPath>..\tmp\obj\debug\sharpmake</IntermediateOutputPath>
+    <BaseIntermediateOutputPath>..\tmp\obj\debug\sharpmake</BaseIntermediateOutputPath>
+    <DocumentationFile>..\tmp\bin\debug\sharpmake\sharpmake.xml</DocumentationFile>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -39,10 +39,10 @@
     <DebugSymbols>false</DebugSymbols>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>../tmp/bin/Release/Sharpmake</OutputPath>
-    <IntermediateOutputPath>../tmp/obj/Release/Sharpmake</IntermediateOutputPath>
-    <BaseIntermediateOutputPath>../tmp/obj/Release/Sharpmake</BaseIntermediateOutputPath>
-    <DocumentationFile>../tmp/bin/Release/Sharpmake/Sharpmake.xml</DocumentationFile>
+    <OutputPath>..\tmp\bin\release\sharpmake</OutputPath>
+    <IntermediateOutputPath>..\tmp\obj\release\sharpmake</IntermediateOutputPath>
+    <BaseIntermediateOutputPath>..\tmp\obj\release\sharpmake</BaseIntermediateOutputPath>
+    <DocumentationFile>..\tmp\bin\release\sharpmake\sharpmake.xml</DocumentationFile>
     <DefineConstants>TRACE</DefineConstants>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -54,15 +54,15 @@
   </PropertyGroup>
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
   <ItemGroup>
-    <Compile Include="Analyzer/Analyzer.cs" />
+    <Compile Include="Analyzer\Analyzer.cs" />
     <Compile Include="Assembler.cs" />
     <Compile Include="AttributeParsers.cs" />
     <Compile Include="Attributes.cs" />
-    <Compile Include="BuildContext/BaseBuildContext.cs" />
-    <Compile Include="BuildContext/ConfigureDependencyAnalyzer.cs" />
-    <Compile Include="BuildContext/GenerateAll.cs" />
-    <Compile Include="BuildContext/RedirectOutput.cs" />
-    <Compile Include="BuildContext/RegressionTest.cs" />
+    <Compile Include="BuildContext\BaseBuildContext.cs" />
+    <Compile Include="BuildContext\ConfigureDependencyAnalyzer.cs" />
+    <Compile Include="BuildContext\GenerateAll.cs" />
+    <Compile Include="BuildContext\RedirectOutput.cs" />
+    <Compile Include="BuildContext\RegressionTest.cs" />
     <Compile Include="Builder.cs" />
     <Compile Include="BuilderExtension.cs" />
     <Compile Include="CommandLine.cs" />
@@ -109,7 +109,7 @@
     <Compile Include="PreprocessorConditionParser.cs" />
     <Compile Include="Project.Configuration.cs" />
     <Compile Include="Project.cs" />
-    <Compile Include="Properties/AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReferenceAlias.cs" />
     <Compile Include="RegexCache.cs" />
     <Compile Include="Resolver.cs" />

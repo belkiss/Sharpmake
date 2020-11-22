@@ -41,16 +41,13 @@
     <Reference Include="Microsoft.CSharp">
       <Private>False</Private>
     </Reference>
-    <Reference Include="System">
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System.Core">
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.Data">
+    <Reference Include="System.Data.DataSetExtensions">
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
+    <Reference Include="System.Data">
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Net.Http">
@@ -62,10 +59,13 @@
     <Reference Include="System.ServiceModel">
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Xml.Linq">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System.Xml">
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.Xml.Linq">
+    <Reference Include="System">
       <Private>False</Private>
     </Reference>
   </ItemGroup>

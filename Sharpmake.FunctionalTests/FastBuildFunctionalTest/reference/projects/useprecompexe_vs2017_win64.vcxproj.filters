@@ -4,15 +4,15 @@
     <ClCompile Include="..\codebase\UsePrecompExe\main.cpp" />
     <ClCompile Include="..\codebase\UsePrecompExe\noprecomp_util.cpp" />
     <ClCompile Include="..\codebase\UsePrecompExe\precomp.cpp" />
-    <ClCompile Include="..\codebase\UsePrecompExe\util.cpp" />
     <ClCompile Include="..\codebase\UsePrecompExe\util_noprecomp_excludedbyextension.ceepeepee" />
     <ClCompile Include="..\codebase\UsePrecompExe\util_withprecomp_weirdextension.ceecee" />
+    <ClCompile Include="..\codebase\UsePrecompExe\util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\codebase\UsePrecompExe\noprecomp_util.h" />
     <ClInclude Include="..\codebase\UsePrecompExe\precomp.h" />
-    <ClInclude Include="..\codebase\UsePrecompExe\util.h" />
     <ClInclude Include="..\codebase\UsePrecompExe\util_noprecomp_excludedbyextension.h" />
     <ClInclude Include="..\codebase\UsePrecompExe\util_withprecomp_weirdextension.h" />
+    <ClInclude Include="..\codebase\UsePrecompExe\util.h" />
   </ItemGroup>
 </Project>

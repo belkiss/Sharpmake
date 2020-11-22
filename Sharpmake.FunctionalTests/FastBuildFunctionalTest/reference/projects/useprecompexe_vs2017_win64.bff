@@ -107,8 +107,8 @@ ObjectList( 'UsePrecompExe_Debug_FastBuild_NoBlob_vs2017_win64_0_objects' )
     .CompilerOutputPath       = '$Intermediate$'
     .CompilerInputFiles       = {
                                     '.\$_CURRENT_BFF_DIR_$\..\codebase\UsePrecompExe\main.cpp',
-                                    '.\$_CURRENT_BFF_DIR_$\..\codebase\UsePrecompExe\util.cpp',
-                                    '.\$_CURRENT_BFF_DIR_$\..\codebase\UsePrecompExe\util_withprecomp_weirdextension.ceecee'
+                                    '.\$_CURRENT_BFF_DIR_$\..\codebase\UsePrecompExe\util_withprecomp_weirdextension.ceecee',
+                                    '.\$_CURRENT_BFF_DIR_$\..\codebase\UsePrecompExe\util.cpp'
                                 }
 
 }
@@ -359,8 +359,8 @@ ObjectList( 'UsePrecompExe_Release_FastBuild_NoBlob_vs2017_win64_0_objects' )
     .CompilerOutputPath       = '$Intermediate$'
     .CompilerInputFiles       = {
                                     '.\$_CURRENT_BFF_DIR_$\..\codebase\UsePrecompExe\main.cpp',
-                                    '.\$_CURRENT_BFF_DIR_$\..\codebase\UsePrecompExe\util.cpp',
-                                    '.\$_CURRENT_BFF_DIR_$\..\codebase\UsePrecompExe\util_withprecomp_weirdextension.ceecee'
+                                    '.\$_CURRENT_BFF_DIR_$\..\codebase\UsePrecompExe\util_withprecomp_weirdextension.ceecee',
+                                    '.\$_CURRENT_BFF_DIR_$\..\codebase\UsePrecompExe\util.cpp'
                                 }
 
 }
