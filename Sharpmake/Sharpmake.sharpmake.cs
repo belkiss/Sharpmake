@@ -7,7 +7,7 @@ using Sharpmake;
 namespace SharpmakeGen
 {
     [Generate]
-    public class SharpmakeProject : Common.SharpmakeLibProject
+    public class SharpmakeProject : Common.SharpmakeBaseProject
     {
         public SharpmakeProject()
         {

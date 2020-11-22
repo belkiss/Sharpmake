@@ -23,19 +23,7 @@ namespace SharpmakeGen
 
     public static class Common
     {
-        public static DotNetFramework DefaultLibDotNetFramework => DotNetFramework.net5_0;
-        public static ITarget[] GetDefaultLibTargets()
-        {
-            return GetDefaultTarget(DefaultLibDotNetFramework);
-        }
-
-        public static DotNetFramework DefaultAppDotNetFramework => DotNetFramework.net5_0;
-        public static ITarget[] GetDefaultAppTargets()
-        {
-            return GetDefaultTarget(DefaultAppDotNetFramework);
-        }
-
-        private static ITarget[] GetDefaultTarget(DotNetFramework dotNetFramework)
+        public static ITarget[] GetDefaultTargets()
         {
             var result = new List<ITarget>();
             result.Add(
@@ -43,7 +31,7 @@ namespace SharpmakeGen
                     Platform.anycpu,
                     DevEnv.vs2019,
                     Optimization.Debug | Optimization.Release,
-                    framework: dotNetFramework
+                    framework: DotNetFramework.net5_0
                 )
             );
             return result.ToArray();
@@ -58,11 +46,11 @@ namespace SharpmakeGen
                 bool generateXmlDoc = true
             )
             {
+                AddTargets(GetDefaultTargets());
+
                 _generateXmlDoc = generateXmlDoc;
 
                 RootPath = Globals.AbsoluteRootPath;
-
-                //DependenciesCopyLocal = DependenciesCopyLocalTypes.None;
 
                 // prevents output dir to have a netstandard subfolder
                 CustomProperties.Add("AppendTargetFrameworkToOutputPath", "false");
@@ -80,7 +68,7 @@ namespace SharpmakeGen
                 conf.TargetPath = @"[project.RootPath]\tmp\bin\[target.Optimization]\[project.Name]";
 
                 conf.IntermediatePath = @"[project.RootPath]\tmp\obj\[target.Optimization]\[project.Name]";
-                //conf.BaseIntermediateOutputPath = conf.IntermediatePath;
+                conf.BaseIntermediateOutputPath = conf.IntermediatePath;
 
                 conf.ReferencesByName.Add("System");
 
@@ -104,28 +92,6 @@ namespace SharpmakeGen
                 }
             }
         }
-
-        public abstract class SharpmakeLibProject : SharpmakeBaseProject
-        {
-            protected SharpmakeLibProject(
-                bool excludeSharpmakeFiles = true,
-                bool generateXmlDoc = true
-            ) : base(excludeSharpmakeFiles, generateXmlDoc)
-            {
-                AddTargets(GetDefaultLibTargets());
-            }
-        }
-
-        public abstract class SharpmakeAppProject : SharpmakeBaseProject
-        {
-            protected SharpmakeAppProject(
-                bool excludeSharpmakeFiles = true,
-                bool generateXmlDoc = true
-            ) : base(excludeSharpmakeFiles, generateXmlDoc)
-            {
-                AddTargets(GetDefaultAppTargets());
-            }
-        }
     }
 
     [Generate]
@@ -135,7 +101,7 @@ namespace SharpmakeGen
         {
             Name = "Sharpmake";
 
-            AddTargets(Common.GetDefaultLibTargets());
+            AddTargets(Common.GetDefaultTargets());
         }
 
         [Configure]
@@ -144,9 +110,8 @@ namespace SharpmakeGen
             conf.SolutionFileName = "[solution.Name]";
             conf.SolutionPath = @"[solution.SharpmakeCsPath]\";
 
-            var appTarget = target.Clone(Common.DefaultAppDotNetFramework);
-            conf.AddProject<SharpmakeApplicationProject>(appTarget);
-            conf.AddProject<SharpmakeUnitTestsProject>(appTarget);
+            conf.AddProject<SharpmakeApplicationProject>(target);
+            conf.AddProject<SharpmakeUnitTestsProject>(target);
 
             // Platforms, Extensions and Samples
             foreach (Type projectType in Assembly.GetExecutingAssembly().GetTypes().Where(t =>
@@ -157,13 +122,6 @@ namespace SharpmakeGen
             )
             {
                 conf.AddProject(projectType, target);
-            }
-
-            foreach (Type projectType in Assembly.GetExecutingAssembly().GetTypes().Where(t =>
-                t.IsSubclassOf(typeof(Extensions.ExtensionCoreProject)))
-            )
-            {
-                conf.AddProject(projectType, appTarget);
             }
         }
     }

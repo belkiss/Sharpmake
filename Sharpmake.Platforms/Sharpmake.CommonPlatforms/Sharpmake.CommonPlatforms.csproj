@@ -22,6 +22,7 @@
     <Optimize>false</Optimize>
     <OutputPath>../../tmp/bin/Debug/Sharpmake.CommonPlatforms</OutputPath>
     <IntermediateOutputPath>../../tmp/obj/Debug/Sharpmake.CommonPlatforms</IntermediateOutputPath>
+    <BaseIntermediateOutputPath>../../tmp/obj/Debug/Sharpmake.CommonPlatforms</BaseIntermediateOutputPath>
     <DocumentationFile>../../tmp/bin/Debug/Sharpmake.CommonPlatforms/Sharpmake.CommonPlatforms.xml</DocumentationFile>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <WarningLevel>4</WarningLevel>
@@ -38,6 +39,7 @@
     <Optimize>true</Optimize>
     <OutputPath>../../tmp/bin/Release/Sharpmake.CommonPlatforms</OutputPath>
     <IntermediateOutputPath>../../tmp/obj/Release/Sharpmake.CommonPlatforms</IntermediateOutputPath>
+    <BaseIntermediateOutputPath>../../tmp/obj/Release/Sharpmake.CommonPlatforms</BaseIntermediateOutputPath>
     <DocumentationFile>../../tmp/bin/Release/Sharpmake.CommonPlatforms/Sharpmake.CommonPlatforms.xml</DocumentationFile>
     <DefineConstants>TRACE</DefineConstants>
     <WarningLevel>4</WarningLevel>

@@ -484,11 +484,11 @@ namespace Sharpmake
                 if (path != null)
                 {
                     path = Util.GetCapitalizedPath(path);
-                    Util.LogWrite("SUCCESS ResolveMissingAssembly refIdentity '{1}' => '{2}'", definition.Display, referenceIdentity, path);
+                    //Util.LogWrite("SUCCESS ResolveMissingAssembly refIdentity '{1}' => '{2}'", definition.Display, referenceIdentity, path);
                     return MetadataReference.CreateFromFile(path);
                 }
 
-                Util.LogWrite("FAILED  ResolveMissingAssembly refIdentity '{1}'", definition.Display, referenceIdentity);
+                //Util.LogWrite("FAILED  ResolveMissingAssembly refIdentity '{1}'", definition.Display, referenceIdentity);
                 return base.ResolveMissingAssembly(definition, referenceIdentity);
             }
         }

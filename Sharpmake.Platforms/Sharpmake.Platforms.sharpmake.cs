@@ -5,7 +5,7 @@ using Sharpmake;
 
 namespace SharpmakeGen.Platforms
 {
-    public abstract class PlatformProject : Common.SharpmakeLibProject
+    public abstract class PlatformProject : Common.SharpmakeBaseProject
     {
         protected PlatformProject()
         {

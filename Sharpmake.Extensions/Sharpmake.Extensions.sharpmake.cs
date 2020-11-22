@@ -5,9 +5,9 @@ using Sharpmake;
 
 namespace SharpmakeGen.Extensions
 {
-    public abstract class ExtensionBaseProject : Common.SharpmakeBaseProject
+    public abstract class ExtensionProject : Common.SharpmakeBaseProject
     {
-        protected ExtensionBaseProject()
+        public ExtensionProject()
         {
             AssemblyName = "[project.Name]";
             RootNamespace = "Sharpmake";
@@ -20,27 +20,8 @@ namespace SharpmakeGen.Extensions
             conf.ProjectFileName = "[project.Name]";
             conf.SolutionFolder = "Extensions";
 
-            var libTarget = target;
-            if (target.Framework != Common.DefaultLibDotNetFramework)
-                libTarget = (Target)target.Clone(Common.DefaultLibDotNetFramework);
-            conf.AddPrivateDependency<SharpmakeProject>(libTarget);
-            conf.AddPrivateDependency<SharpmakeGeneratorsProject>(libTarget);
-        }
-    }
-
-    public abstract class ExtensionProject : ExtensionBaseProject
-    {
-        protected ExtensionProject()
-        {
-            AddTargets(Common.GetDefaultLibTargets());
-        }
-    }
-
-    public abstract class ExtensionCoreProject : ExtensionBaseProject
-    {
-        protected ExtensionCoreProject()
-        {
-            AddTargets(Common.GetDefaultAppTargets());
+            conf.AddPrivateDependency<SharpmakeProject>(target);
+            conf.AddPrivateDependency<SharpmakeGeneratorsProject>(target);
         }
     }
 }

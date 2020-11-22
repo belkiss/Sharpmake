@@ -7,7 +7,7 @@ using Sharpmake;
 namespace SharpmakeGen
 {
     [Generate]
-    public class SharpmakeApplicationProject : Common.SharpmakeAppProject
+    public class SharpmakeApplicationProject : Common.SharpmakeBaseProject
     {
         public SharpmakeApplicationProject()
             : base(generateXmlDoc: false)
@@ -15,7 +15,7 @@ namespace SharpmakeGen
             Name = "Sharpmake.Application";
             ApplicationManifest = "app.manifest";
 
-            //DependenciesCopyLocal = DependenciesCopyLocalTypes.Default;
+            DependenciesCopyLocal = DependenciesCopyLocalTypes.Default;
         }
 
         public override void ConfigureAll(Configuration conf, Target target)
@@ -29,10 +29,9 @@ namespace SharpmakeGen
 
             conf.ReferencesByName.Add("System.Windows.Forms");
 
-            var libTarget = target.Clone(Common.DefaultLibDotNetFramework);
-            conf.AddPrivateDependency<SharpmakeProject>(libTarget);
-            conf.AddPrivateDependency<SharpmakeGeneratorsProject>(libTarget);
-            conf.AddPrivateDependency<Platforms.CommonPlatformsProject>(libTarget);
+            conf.AddPrivateDependency<SharpmakeProject>(target);
+            conf.AddPrivateDependency<SharpmakeGeneratorsProject>(target);
+            conf.AddPrivateDependency<Platforms.CommonPlatformsProject>(target);
         }
     }
 }
