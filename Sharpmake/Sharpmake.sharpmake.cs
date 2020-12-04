@@ -23,8 +23,6 @@ namespace SharpmakeGen
             conf.ProjectPath = @"[project.SourceRootPath]";
 
             conf.Options.Add(Options.CSharp.AllowUnsafeBlocks.Enabled);
-            conf.ReferencesByNuGetPackage.Add("System.Collections.Immutable", "5.0.0");
-            conf.ReferencesByNuGetPackage.Add("System.Reflection.Metadata", "5.0.0");
 
             conf.ReferencesByNuGetPackage.Add("Microsoft.Build.Utilities.Core", "16.8.0");
             conf.ReferencesByNuGetPackage.Add("Microsoft.CodeAnalysis.CSharp", "3.8.0");
