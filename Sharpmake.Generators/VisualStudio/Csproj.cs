@@ -1535,7 +1535,7 @@ namespace Sharpmake.Generators.VisualStudio
                     writer.Write(VsProjCommon.Template.PropertyGroupStart);
 
                     using (resolver.NewScopedParameter("custompropertyname", "AssemblySearchPaths"))
-                    using (resolver.NewScopedParameter("custompropertyvalue", "$(AssemblySearchPaths);{GAC}"))
+                    using (resolver.NewScopedParameter("custompropertyvalue", "$(AssemblySearchPaths);$(AssemblyFoldersConfigFileSearchPath);{GAC}"))
                         Write(VsProjCommon.Template.CustomProperty, writer, resolver);
 
                     writer.Write(VsProjCommon.Template.PropertyGroupEnd);
