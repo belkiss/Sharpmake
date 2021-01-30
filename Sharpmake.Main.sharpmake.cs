@@ -57,7 +57,7 @@ namespace SharpmakeGen
                 RootPath = Globals.AbsoluteRootPath;
 
                 // Use the new csproj style
-                //ProjectSchema = CSharpProjectSchema.NetCore;
+                ProjectSchema = CSharpProjectSchema.NetCore;
                 CustomProperties.Add("Deterministic", "false");
                 CustomProperties.Add("AppendTargetFrameworkToOutputPath", "false"); // prevents output dir to have a framework subfolder
                 //CustomProperties.Add("RuntimeIdentifier", "win-x64");
