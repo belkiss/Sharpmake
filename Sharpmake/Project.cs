@@ -2252,6 +2252,13 @@ namespace Sharpmake
         public Strings VsctExtension = new Strings(".vsct");
         public CSharpProjectType ProjectTypeGuids = CSharpProjectType.Default;
         public CSharpProjectSchema ProjectSchema = CSharpProjectSchema.Default;
+
+        // In SDK-based projects {GAC} is no longer part of the search paths
+        // Setting this to true will add it back.
+        // Use with care!
+        // Cf. https://github.com/dotnet/sdk/issues/987#issuecomment-286829201
+        public bool NetCoreSdkGACAssemblyLookup = false;
+
         public NetCoreSdkTypes NetCoreSdkType = NetCoreSdkTypes.Default;
         public string ResourcesPath = null;
         public string ContentPath = null;

@@ -16,7 +16,8 @@ namespace SharpmakeGen
             // indicates where to find the nuget(s) we reference without needing nuget.config or global setting
             CustomProperties.Add("RestoreAdditionalProjectSources", "https://api.nuget.org/v3/index.json");
 
-            CustomProperties.Add("AssemblySearchPaths", "$(AssemblySearchPaths);{CandidateAssemblyFiles};{HintPathFromItem};{TargetFrameworkDirectory};{GAC};{RawFileName}");
+            // workaround to be able to use Microsoft.Build.Utilities.Core from mono on unix platforms
+            NetCoreSdkGACAssemblyLookup = true;
             // resolved runtime target assets should be copied locally.
             //CustomProperties.Add("CopyLocalRuntimeTargetAssets", "true");
             //CustomProperties.Add("CopyLocalLockFileAssemblies", "true");
@@ -29,7 +30,7 @@ namespace SharpmakeGen
 
             conf.Options.Add(Options.CSharp.AllowUnsafeBlocks.Enabled);
 
-            // this needs to remain a named reference otherwise the assembly won't work on mono for on unix platforms
+            // this needs to remain a named reference from the GAC
             conf.ReferencesByNameExternal.Add("Microsoft.Build.Utilities.Core");
 
             conf.ReferencesByNuGetPackage.Add("Microsoft.CodeAnalysis.CSharp", "3.8.0");

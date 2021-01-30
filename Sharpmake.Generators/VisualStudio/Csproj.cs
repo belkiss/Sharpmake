@@ -1530,6 +1530,17 @@ namespace Sharpmake.Generators.VisualStudio
 
             if (isNetCoreProjectSchema)
             {
+                if (project.NetCoreSdkGACAssemblyLookup)
+                {
+                    writer.Write(VsProjCommon.Template.PropertyGroupStart);
+
+                    using (resolver.NewScopedParameter("custompropertyname", "AssemblySearchPaths"))
+                    using (resolver.NewScopedParameter("custompropertyvalue", "$(AssemblySearchPaths);{GAC}"))
+                        Write(VsProjCommon.Template.CustomProperty, writer, resolver);
+
+                    writer.Write(VsProjCommon.Template.PropertyGroupEnd);
+                }
+
                 using (resolver.NewScopedParameter("importProject", "Sdk.targets"))
                 using (resolver.NewScopedParameter("sdkVersion", netCoreSdk))
                     Write(Template.Project.ImportProjectSdkItem, writer, resolver);
