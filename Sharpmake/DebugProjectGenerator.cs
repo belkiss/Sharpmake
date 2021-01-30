@@ -257,7 +257,9 @@ namespace Sharpmake
                 startArguments += " /debugScripts";
 
             string quote = "\'"; // Use single quote that is cross platform safe
-            conf.CsprojUserFile.StartArguments = $@"/sources(@{quote}{string.Join(";", MainSources)}{quote}) {startArguments}";
+            string lbracket = Util.IsRunningOnUnix() ? @"\(" : @"("; // When running in unix, we must escape brackets as well
+            string rbracket = Util.IsRunningOnUnix() ? @"\)" : @")"; // When running in unix, we must escape brackets as well
+            conf.CsprojUserFile.StartArguments = $@"/sources{lbracket}@{quote}{string.Join(";", MainSources)}{quote}{rbracket} {startArguments}";
             conf.CsprojUserFile.StartProgram = sharpmakeApplicationExePath;
         }
     }
@@ -310,6 +312,11 @@ namespace Sharpmake
             VsctExtension.Clear();
 
             Name = _projectInfo.DisplayName;
+
+            // Use the new csproj style
+            ProjectSchema = CSharpProjectSchema.NetCore;
+            CustomProperties.Add("Deterministic", "false");
+            CustomProperties.Add("AppendTargetFrameworkToOutputPath", "false"); // prevents output dir to have a netstandard subfolder
 
             AddTargets(DebugProjectGenerator.GetTargets());
         }
