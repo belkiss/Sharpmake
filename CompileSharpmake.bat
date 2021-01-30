@@ -9,27 +9,6 @@ setlocal enabledelayedexpansion
 : set batch file directory as current
 pushd "%~dp0"
 
-set VSWHERE="%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"
-if not exist %VSWHERE% (
-    echo ERROR: Cannot determine the location of the vswhere command Common Tools folder.
-    goto error
-)
-
-set VSMSBUILDCMD=
-for /f "usebackq delims=" %%i in (`%VSWHERE% -latest -products * -property installationPath`) do (
-  if exist "%%i\Common7\Tools\VsMSBuildCmd.bat" (
-    set VSMSBUILDCMD="%%i\Common7\Tools\VsMSBuildCmd.bat"
-  )
-)
-
-if not defined VSMSBUILDCMD (
-    echo ERROR: Cannot determine the location of Common Tools folder.
-    goto error
-)
-echo MSBuild batch path: !VSMSBUILDCMD!
-call !VSMSBUILDCMD!
-if %errorlevel% NEQ 0 goto end
-
 if "%~1" == "" (
     call :BuildSharpmake "Sharpmake.sln" "Debug" "Any CPU"
 ) else (
@@ -41,9 +20,9 @@ goto end
 :BuildSharpmake
 echo Compiling %~1 in "%~2|%~3"...
 
-set MSBUILD_CMD=msbuild -t:build -restore "%~1" /nologo /verbosity:diag /p:Configuration="%~2" /p:Platform="%~3"
-echo %MSBUILD_CMD%
-%MSBUILD_CMD%
+set BUILD_CMD=dotnet build "%~1" -nologo -v m -c "%~2" /p:Platform="%~3"
+echo %BUILD_CMD%
+%BUILD_CMD%
 if %errorlevel% NEQ 0 (
     echo ERROR: Failed to compile %~1 in "%~2|%~3".
     exit /b 1
