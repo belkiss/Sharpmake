@@ -16,6 +16,7 @@ namespace SharpmakeGen
             // indicates where to find the nuget(s) we reference without needing nuget.config or global setting
             CustomProperties.Add("RestoreAdditionalProjectSources", "https://api.nuget.org/v3/index.json");
 
+            CustomProperties.Add("AssemblySearchPaths", "$(AssemblySearchPaths);{CandidateAssemblyFiles};{HintPathFromItem};{TargetFrameworkDirectory};{GAC};{RawFileName}");
             // resolved runtime target assets should be copied locally.
             //CustomProperties.Add("CopyLocalRuntimeTargetAssets", "true");
             //CustomProperties.Add("CopyLocalLockFileAssemblies", "true");
