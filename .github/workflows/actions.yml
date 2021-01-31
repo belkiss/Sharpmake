@@ -16,34 +16,40 @@ jobs:
       DOTNET_NOLOGO: true
 
     steps:
+      - name: Install .NET Core 5
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+
       - name: Checkout the repo
         uses: actions/checkout@v2
+
+      - name: Clean package cache as a temporary workaround for actions/setup-dotnet#155
+        run: dotnet nuget locals all --clear 
 
       - name: Bootstrap.bat
         if: runner.os == 'Windows'
         shell: cmd
         run: bootstrap.bat
 
-      - name: Bootstrap.sh
+      - name: Bootstrap.dotnet.sh
         if: runner.os != 'Windows'
         shell: bash
-        run: ./bootstrap.sh
+        run: ./bootstrap.dotnet.sh
 
       - name: CompileSharpmake.bat
         if: runner.os == 'Windows'
         shell: cmd
         run: CompileSharpmake.bat Sharpmake.sln "${{ matrix.configuration }}" "Any CPU"
 
-      - name: CompileSharpmake.sh
+      - name: CompileSharpmake.dotnet.sh
         if: runner.os != 'Windows'
         shell: bash
-        run: ./CompileSharpmake.sh Sharpmake.sln "${{ matrix.configuration }}"
+        run: ./CompileSharpmake.dotnet.sh Sharpmake.sln "${{ matrix.configuration }}"
 
       - name: UnitTest
         if: runner.os == 'Windows'
-        run: |
-          nuget install NUnit.ConsoleRunner -Version 3.12.0 -OutputDirectory tmp/pkg
-          tmp/pkg/NUnit.ConsoleRunner.3.12.0/tools/nunit3-console.exe tmp/unittests/${{ matrix.configuration }}/Sharpmake.UnitTests.dll
+        run: dotnet test tmp/unittests/${{ matrix.configuration }}/Sharpmake.UnitTests.dll
 
       - name: RegressionTest
         if: runner.os == 'Windows'

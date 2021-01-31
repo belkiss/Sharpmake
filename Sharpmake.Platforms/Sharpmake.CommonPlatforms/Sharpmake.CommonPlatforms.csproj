@@ -7,7 +7,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Sharpmake</RootNamespace>
     <AssemblyName>Sharpmake.CommonPlatforms</AssemblyName>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <FileAlignment>512</FileAlignment>
     <EnableDefaultItems>false</EnableDefaultItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -15,6 +15,7 @@
   <PropertyGroup>
     <Deterministic>false</Deterministic>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -51,11 +52,6 @@
     <LangVersion>7</LangVersion>
   </PropertyGroup>
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
-  <ItemGroup>
-    <Reference Include="System">
-      <Private>False</Private>
-    </Reference>
-  </ItemGroup>
   <ItemGroup>
     <Compile Include="Android/AndroidBuildTargets.cs" />
     <Compile Include="Android/AndroidPlatform.Vcxproj.Template.cs" />

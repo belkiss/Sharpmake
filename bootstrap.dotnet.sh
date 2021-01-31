@@ -28,14 +28,14 @@ echo $SM_CMD_RUN
 eval $SM_CMD_RUN
 if [ $? -ne 0 ]; then
     echo "DotNet run failed, trying to fallback to the old way..."
-$CURRENT_DIR/CompileSharpmake.sh $CURRENT_DIR/Sharpmake.Application/Sharpmake.Application.csproj Debug AnyCPU
-if [ $? -ne 0 ]; then
-    error
-fi
+    $CURRENT_DIR/CompileSharpmake.sh $CURRENT_DIR/Sharpmake.Application/Sharpmake.Application.csproj Debug AnyCPU
+    if [ $? -ne 0 ]; then
+        error
+    fi
 
-SHARPMAKE_EXECUTABLE=$CURRENT_DIR/tmp/bin/Debug/Sharpmake.Application/Sharpmake.Application.exe
+    SHARPMAKE_EXECUTABLE=$CURRENT_DIR/tmp/bin/Debug/Sharpmake.Application.exe
 
-echo "Generating Sharpmake solution..."
+    echo "Generating Sharpmake solution..."
     SM_CMD_LEGACY="mono --debug \"${SHARPMAKE_EXECUTABLE}\" /sources\(\'${SHARPMAKE_MAIN}\'\) /verbose"
     echo $SM_CMD_LEGACY
     eval $SM_CMD_LEGACY || error

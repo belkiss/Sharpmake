@@ -22,6 +22,9 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+#if NET5_0
+using System.Runtime.Versioning;
+#endif
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Setup.Configuration;
@@ -931,40 +934,40 @@ namespace Sharpmake
         public static HashSet<string> FilesToBeExplicitlyRemovedFromDB = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
         public static HashSet<string> FilesAutoCleanupIgnoredEndings = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
         private const string s_filesAutoCleanupDBPrefix = "sharpmakeautocleanupdb";
-        private enum DBVersion { Version = 2 };
+        private enum DBVersion { Version = 3 };
 
         private static Dictionary<string, DateTime> ReadCleanupDatabase(string databaseFilename)
         {
             Dictionary<string, DateTime> dbFiles = null;
             if (File.Exists(databaseFilename))
             {
-                try
-                {
-                    // Read database - This is simply a simple binary file containing the list of file and a version number.
-                    using (Stream readStream = new FileStream(databaseFilename, FileMode.Open, FileAccess.Read, FileShare.None))
-                    using (BinaryReader binReader = new BinaryReader(readStream))
-                    {
-                        // Validate version number
-                        int version = binReader.ReadInt32();
-                        if (version == (int)DBVersion.Version)
-                        {
-                            // Read the list of files.
-                            IFormatter formatter = new BinaryFormatter();
-                            var tmpDbFiles = (Dictionary<string, DateTime>)formatter.Deserialize(readStream);
-                            dbFiles = tmpDbFiles.ToDictionary(kvp => kvp.Key, kvp => kvp.Value, StringComparer.InvariantCultureIgnoreCase);
-                        }
-                        else if (version == 1)
-                        {
-                            IFormatter formatter = new BinaryFormatter();
-                            ConcurrentDictionary<string, bool> dbFilesV1 = (ConcurrentDictionary<string, bool>)formatter.Deserialize(readStream);
-                            DateTime now = DateTime.Now;
-                            dbFiles = dbFilesV1.ToDictionary(kvp => kvp.Key, kvp => now);
-                        }
+                //try
+                //{
+                //    // Read database - This is simply a simple binary file containing the list of file and a version number.
+                //    using (Stream readStream = new FileStream(databaseFilename, FileMode.Open, FileAccess.Read, FileShare.None))
+                //    using (BinaryReader binReader = new BinaryReader(readStream))
+                //    {
+                //        // Validate version number
+                //        int version = binReader.ReadInt32();
+                //        if (version == (int)DBVersion.Version)
+                //        {
+                //            // Read the list of files.
+                //            IFormatter formatter = new BinaryFormatter();
+                //            var tmpDbFiles = (Dictionary<string, DateTime>)formatter.Deserialize(readStream);
+                //            dbFiles = tmpDbFiles.ToDictionary(kvp => kvp.Key, kvp => kvp.Value, StringComparer.InvariantCultureIgnoreCase);
+                //        }
+                //        else if (version == 1)
+                //        {
+                //            IFormatter formatter = new BinaryFormatter();
+                //            ConcurrentDictionary<string, bool> dbFilesV1 = (ConcurrentDictionary<string, bool>)formatter.Deserialize(readStream);
+                //            DateTime now = DateTime.Now;
+                //            dbFiles = dbFilesV1.ToDictionary(kvp => kvp.Key, kvp => now);
+                //        }
 
-                        readStream.Close();
-                    }
-                }
-                catch (SerializationException)
+                //        readStream.Close();
+                //    }
+                //}
+                //catch (SerializationException)
                 {
                     // File is likely corrupted.
                     // This is no big deal except that cleanup won't occur.
@@ -1106,8 +1109,8 @@ namespace Sharpmake
                     binWriter.Flush();
 
                     // Write the list of files.
-                    IFormatter formatter = new BinaryFormatter();
-                    formatter.Serialize(writeStream, newDbFiles);
+                    //IFormatter formatter = new BinaryFormatter();
+                    //formatter.Serialize(writeStream, newDbFiles);
                 }
             }
             else
@@ -1137,8 +1140,8 @@ namespace Sharpmake
 
             using (Stream writeStream = new FileStream(winFormSubTypesDbFullPath, FileMode.Create, FileAccess.Write, FileShare.None))
             {
-                BinaryFormatter binaryFormatter = new BinaryFormatter();
-                binaryFormatter.Serialize(writeStream, allCsProjSubTypes);
+                //BinaryFormatter binaryFormatter = new BinaryFormatter();
+                //binaryFormatter.Serialize(writeStream, allCsProjSubTypes);
             }
         }
 
@@ -1153,8 +1156,8 @@ namespace Sharpmake
             {
                 using (Stream readStream = new FileStream(winFormSubTypesDbFullPath, FileMode.Open, FileAccess.Read, FileShare.None))
                 {
-                    BinaryFormatter binaryFormatter = new BinaryFormatter();
-                    return binaryFormatter.Deserialize(readStream);
+                    //BinaryFormatter binaryFormatter = new BinaryFormatter();
+                    //return binaryFormatter.Deserialize(readStream);
                 }
             }
             catch
@@ -1748,7 +1751,7 @@ namespace Sharpmake
 
         private static bool IsVisualStudioInstalled(DevEnv devEnv)
         {
-            if (!GetExecutingPlatform().HasAnyFlag(Platform.win32 | Platform.win64))
+            if (!OperatingSystem.IsWindows())
                 return false;
 
             string registryKeyString = string.Format(
@@ -2361,7 +2364,7 @@ namespace Sharpmake
 
             string key = string.Empty;
 
-            if (GetExecutingPlatform().HasAnyFlag(Platform.win32 | Platform.win64))
+            if (OperatingSystem.IsWindows())
             {
                 try
                 {

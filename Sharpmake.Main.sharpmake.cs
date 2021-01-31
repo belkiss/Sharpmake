@@ -35,7 +35,7 @@ namespace SharpmakeGen
                     Platform.anycpu,
                     DevEnv.vs2019,
                     Optimization.Debug | Optimization.Release,
-                    framework: DotNetFramework.v4_7_2
+                    framework: DotNetFramework.net5_0
                 )
             );
             return result.ToArray();
@@ -61,6 +61,10 @@ namespace SharpmakeGen
                 CustomProperties.Add("Deterministic", "false");
                 CustomProperties.Add("AppendTargetFrameworkToOutputPath", "false"); // prevents output dir to have a framework subfolder
                 //CustomProperties.Add("RuntimeIdentifier", "win-x64");
+
+                // Enable Globalization Invariant Mode
+                // https://github.com/dotnet/runtime/blob/master/docs/design/features/globalization-invariant-mode.md
+                CustomProperties.Add("InvariantGlobalization", "true");
 
                 if (excludeSharpmakeFiles)
                     SourceFilesExcludeRegex.Add(@".*\.sharpmake.cs");

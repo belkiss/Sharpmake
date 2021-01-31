@@ -30,15 +30,13 @@ namespace SharpmakeGen
 
             conf.Options.Add(Options.CSharp.AllowUnsafeBlocks.Enabled);
 
-            // this needs to remain a named reference from the GAC
-            conf.ReferencesByNameExternal.Add("Microsoft.Build.Utilities.Core");
-
             conf.ReferencesByNuGetPackage.Add("Microsoft.CodeAnalysis.CSharp", "3.8.0");
 
             // This dependency is not strictly necessary, but Microsoft.CodeAnalysis.CSharp
             // will throw an exception at runtime if the DiaSymReader DLL is not found next to the exe
             conf.ReferencesByNuGetPackage.Add("Microsoft.DiaSymReader.Native", "1.7.0");
-            conf.ReferencesByNuGetPackage.Add("Microsoft.VisualStudio.Setup.Configuration.Interop", "1.16.30");
+            conf.ReferencesByNuGetPackage.Add("Microsoft.VisualStudio.Setup.Configuration.Interop", "2.3.2262-g94fae01e");
+            conf.ReferencesByNuGetPackage.Add("Microsoft.Win32.Registry", "5.0.0");
         }
     }
 }
