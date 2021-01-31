@@ -62,6 +62,9 @@ namespace SharpmakeGen
                 CustomProperties.Add("AppendTargetFrameworkToOutputPath", "false"); // prevents output dir to have a framework subfolder
                 //CustomProperties.Add("RuntimeIdentifier", "win-x64");
 
+                // indicates where to find the nuget(s) we reference without needing nuget.config or global setting
+                CustomProperties.Add("RestoreAdditionalProjectSources", "https://api.nuget.org/v3/index.json");
+
                 if (excludeSharpmakeFiles)
                     SourceFilesExcludeRegex.Add(@".*\.sharpmake.cs");
             }

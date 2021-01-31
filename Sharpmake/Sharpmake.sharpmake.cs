@@ -13,9 +13,6 @@ namespace SharpmakeGen
         {
             Name = "Sharpmake";
 
-            // indicates where to find the nuget(s) we reference without needing nuget.config or global setting
-            CustomProperties.Add("RestoreAdditionalProjectSources", "https://api.nuget.org/v3/index.json");
-
             // workaround to be able to use Microsoft.Build.Utilities.Core from mono on unix platforms
             NetCoreSdkGACAssemblyLookup = true;
             // resolved runtime target assets should be copied locally.
