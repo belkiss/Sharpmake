@@ -89,9 +89,9 @@
     <OutDir>output\debug_fastbuild_noblob_vs2017\</OutDir>
     <IntDir>build\debug_fastbuild_noblob_vs2017\useprecompexe\</IntDir>
     <NMakeBuildCommandLine>cd $(SolutionDir)
-$(ProjectDir)..\..\..\tools\FastBuild\FBuild.exe UsePrecompExe_Debug_FastBuild_NoBlob_vs2017_win64 -ide -summary -wait -config $(SolutionName).bff </NMakeBuildCommandLine>
+$(ProjectDir)..\..\..\tools\FastBuild\Windows-x64\FBuild.exe UsePrecompExe_Debug_FastBuild_NoBlob_vs2017_win64 -ide -summary -wait -config $(SolutionName).bff </NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>cd $(SolutionDir)
-$(ProjectDir)..\..\..\tools\FastBuild\FBuild.exe -clean UsePrecompExe_Debug_FastBuild_NoBlob_vs2017_win64 -ide -summary -wait -config $(SolutionName).bff </NMakeReBuildCommandLine>
+$(ProjectDir)..\..\..\tools\FastBuild\Windows-x64\FBuild.exe -clean UsePrecompExe_Debug_FastBuild_NoBlob_vs2017_win64 -ide -summary -wait -config $(SolutionName).bff </NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>del "build\debug_fastbuild_noblob_vs2017\useprecompexe\*unity*.cpp" >NUL 2>NUL
 del "build\debug_fastbuild_noblob_vs2017\useprecompexe\*.obj" >NUL 2>NUL
 del "build\debug_fastbuild_noblob_vs2017\useprecompexe\*.a" >NUL 2>NUL
@@ -110,9 +110,9 @@ del "output\debug_fastbuild_noblob_vs2017\useprecompexe.pdb" >NUL 2>NUL</NMakeCl
     <OutDir>output\debug_fastbuild_vs2017\</OutDir>
     <IntDir>build\debug_fastbuild_vs2017\useprecompexe\</IntDir>
     <NMakeBuildCommandLine>cd $(SolutionDir)
-$(ProjectDir)..\..\..\tools\FastBuild\FBuild.exe UsePrecompExe_Debug_FastBuild_vs2017_win64 -ide -summary -wait -config $(SolutionName).bff </NMakeBuildCommandLine>
+$(ProjectDir)..\..\..\tools\FastBuild\Windows-x64\FBuild.exe UsePrecompExe_Debug_FastBuild_vs2017_win64 -ide -summary -wait -config $(SolutionName).bff </NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>cd $(SolutionDir)
-$(ProjectDir)..\..\..\tools\FastBuild\FBuild.exe -clean UsePrecompExe_Debug_FastBuild_vs2017_win64 -ide -summary -wait -config $(SolutionName).bff </NMakeReBuildCommandLine>
+$(ProjectDir)..\..\..\tools\FastBuild\Windows-x64\FBuild.exe -clean UsePrecompExe_Debug_FastBuild_vs2017_win64 -ide -summary -wait -config $(SolutionName).bff </NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>del "build\debug_fastbuild_vs2017\useprecompexe\*unity*.cpp" >NUL 2>NUL
 del "build\debug_fastbuild_vs2017\useprecompexe\*.obj" >NUL 2>NUL
 del "build\debug_fastbuild_vs2017\useprecompexe\*.a" >NUL 2>NUL
@@ -142,9 +142,9 @@ del "output\debug_fastbuild_vs2017\useprecompexe.pdb" >NUL 2>NUL</NMakeCleanComm
     <OutDir>output\release_fastbuild_noblob_vs2017\</OutDir>
     <IntDir>build\release_fastbuild_noblob_vs2017\useprecompexe\</IntDir>
     <NMakeBuildCommandLine>cd $(SolutionDir)
-$(ProjectDir)..\..\..\tools\FastBuild\FBuild.exe UsePrecompExe_Release_FastBuild_NoBlob_vs2017_win64 -ide -summary -wait -config $(SolutionName).bff </NMakeBuildCommandLine>
+$(ProjectDir)..\..\..\tools\FastBuild\Windows-x64\FBuild.exe UsePrecompExe_Release_FastBuild_NoBlob_vs2017_win64 -ide -summary -wait -config $(SolutionName).bff </NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>cd $(SolutionDir)
-$(ProjectDir)..\..\..\tools\FastBuild\FBuild.exe -clean UsePrecompExe_Release_FastBuild_NoBlob_vs2017_win64 -ide -summary -wait -config $(SolutionName).bff </NMakeReBuildCommandLine>
+$(ProjectDir)..\..\..\tools\FastBuild\Windows-x64\FBuild.exe -clean UsePrecompExe_Release_FastBuild_NoBlob_vs2017_win64 -ide -summary -wait -config $(SolutionName).bff </NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>del "build\release_fastbuild_noblob_vs2017\useprecompexe\*unity*.cpp" >NUL 2>NUL
 del "build\release_fastbuild_noblob_vs2017\useprecompexe\*.obj" >NUL 2>NUL
 del "build\release_fastbuild_noblob_vs2017\useprecompexe\*.a" >NUL 2>NUL
@@ -163,9 +163,9 @@ del "output\release_fastbuild_noblob_vs2017\useprecompexe.pdb" >NUL 2>NUL</NMake
     <OutDir>output\release_fastbuild_vs2017\</OutDir>
     <IntDir>build\release_fastbuild_vs2017\useprecompexe\</IntDir>
     <NMakeBuildCommandLine>cd $(SolutionDir)
-$(ProjectDir)..\..\..\tools\FastBuild\FBuild.exe UsePrecompExe_Release_FastBuild_vs2017_win64 -ide -summary -wait -config $(SolutionName).bff </NMakeBuildCommandLine>
+$(ProjectDir)..\..\..\tools\FastBuild\Windows-x64\FBuild.exe UsePrecompExe_Release_FastBuild_vs2017_win64 -ide -summary -wait -config $(SolutionName).bff </NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>cd $(SolutionDir)
-$(ProjectDir)..\..\..\tools\FastBuild\FBuild.exe -clean UsePrecompExe_Release_FastBuild_vs2017_win64 -ide -summary -wait -config $(SolutionName).bff </NMakeReBuildCommandLine>
+$(ProjectDir)..\..\..\tools\FastBuild\Windows-x64\FBuild.exe -clean UsePrecompExe_Release_FastBuild_vs2017_win64 -ide -summary -wait -config $(SolutionName).bff </NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>del "build\release_fastbuild_vs2017\useprecompexe\*unity*.cpp" >NUL 2>NUL
 del "build\release_fastbuild_vs2017\useprecompexe\*.obj" >NUL 2>NUL
 del "build\release_fastbuild_vs2017\useprecompexe\*.a" >NUL 2>NUL
