@@ -6,12 +6,16 @@ COLOR
 :: set batch file directory as current
 pushd "%~dp0"
 
+set SHARPMAKE_EXECUTABLE=tmp\bin\debug\Sharpmake.Application.exe
+
+call CompileSharpmake.bat Sharpmake.Application/Sharpmake.Application.csproj Debug AnyCPU
+if %errorlevel% NEQ 0 goto error
 set SHARPMAKE_MAIN='Sharpmake.Main.sharpmake.cs'
 if not "%~1" == "" (
     set SHARPMAKE_MAIN='%~1'
 )
 
-set SM_CMD=dotnet run --verbosity m --project Sharpmake.Application/Sharpmake.Application.csproj --configuration Debug /sources(%SHARPMAKE_MAIN%) /verbose /generateDebugSolution
+set SM_CMD=%SHARPMAKE_EXECUTABLE% /sources(%SHARPMAKE_MAIN%) /verbose
 echo %SM_CMD%
 %SM_CMD%
 if %errorlevel% NEQ 0 goto error
