@@ -12,12 +12,12 @@ COLOR
 :: set batch file directory as current
 pushd "%~dp0"
 
-set SHARPMAKE_EXECUTABLE=tmp\bin\debug\Sharpmake.Application.exe
-
 set SHARPMAKE_OPTIM=Debug
 if not "%~2" == "" (
     set SHARPMAKE_OPTIM=%~2
 )
+
+set SHARPMAKE_EXECUTABLE=tmp\bin\%SHARPMAKE_OPTIM%\Sharpmake.Application.exe
 
 call CompileSharpmake.bat Sharpmake.Application/Sharpmake.Application.csproj %SHARPMAKE_OPTIM% AnyCPU
 if %errorlevel% NEQ 0 goto error
