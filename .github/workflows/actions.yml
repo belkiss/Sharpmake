@@ -27,10 +27,10 @@ jobs:
       - name: Clean package cache as a temporary workaround for actions/setup-dotnet#155
         run: dotnet nuget locals all --clear 
 
-      - name: Bootstrap.bat
+      - name: Bootstrap.bat ${{ matrix.configuration }}
         if: runner.os == 'Windows'
         shell: cmd
-        run: bootstrap.bat
+        run: bootstrap.bat Sharpmake.Main.sharpmake.cs ${{ matrix.configuration }}
 
       - name: Bootstrap.dotnet.sh
         if: runner.os != 'Windows'

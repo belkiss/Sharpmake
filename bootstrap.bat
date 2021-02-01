@@ -1,4 +1,10 @@
 @echo off
+:: Batch arguments:
+:: %~1 Main sharpmake file
+:: %~2 Target(Normally should be Debug or Release)
+:: if none are passed, defaults to Sharpmake.Main.sharpmake.cs and Debug
+
+setlocal enabledelayedexpansion
 
 :: Clear previous run status
 COLOR
@@ -8,7 +14,12 @@ pushd "%~dp0"
 
 set SHARPMAKE_EXECUTABLE=tmp\bin\debug\Sharpmake.Application.exe
 
-call CompileSharpmake.bat Sharpmake.Application/Sharpmake.Application.csproj Debug AnyCPU
+set SHARPMAKE_OPTIM=Debug
+if not "%~2" == "" (
+    set SHARPMAKE_OPTIM=%~2
+)
+
+call CompileSharpmake.bat Sharpmake.Application/Sharpmake.Application.csproj %SHARPMAKE_OPTIM% AnyCPU
 if %errorlevel% NEQ 0 goto error
 set SHARPMAKE_MAIN='Sharpmake.Main.sharpmake.cs'
 if not "%~1" == "" (
