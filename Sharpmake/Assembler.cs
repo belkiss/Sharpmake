@@ -30,6 +30,7 @@ namespace Sharpmake
     public class Assembler
     {
         public const Options.CSharp.LanguageVersion SharpmakeScriptsCSharpVersion = Options.CSharp.LanguageVersion.CSharp7;
+        public const DotNetFramework SharpmakeDotNetFramework = DotNetFramework.net5_0;
 
         /// <summary>
         /// Extra user directory to load assembly from using statement detection
