@@ -15,6 +15,12 @@ namespace SharpmakeGen
 
             // indicates where to find the nuget(s) we reference without needing nuget.config or global setting
             CustomProperties.Add("RestoreAdditionalProjectSources", "https://api.nuget.org/v3/index.json");
+
+            // workaround to be able to use Microsoft.Build.Utilities.Core from mono on unix platforms
+            NetCoreSdkGACAssemblyLookup = true;
+            // resolved runtime target assets should be copied locally.
+            //CustomProperties.Add("CopyLocalRuntimeTargetAssets", "true");
+            //CustomProperties.Add("CopyLocalLockFileAssemblies", "true");
         }
 
         public override void ConfigureAll(Configuration conf, Target target)
@@ -26,6 +32,7 @@ namespace SharpmakeGen
 
             conf.ReferencesByNuGetPackage.Add("Microsoft.CodeAnalysis.CSharp", "3.8.0");
             conf.ReferencesByNuGetPackage.Add("Microsoft.VisualStudio.Setup.Configuration.Interop", "2.3.2262-g94fae01e");
+            conf.ReferencesByNuGetPackage.Add("Microsoft.Win32.Registry", "5.0.0");
         }
     }
 }
