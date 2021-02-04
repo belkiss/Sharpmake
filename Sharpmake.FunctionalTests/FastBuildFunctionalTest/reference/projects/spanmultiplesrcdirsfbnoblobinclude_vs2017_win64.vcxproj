@@ -67,9 +67,9 @@
     <OutDir>output\debug_fastbuild_noblob_vs2017\</OutDir>
     <IntDir>build\debug_fastbuild_noblob_vs2017\spanmultiplesrcdirsfbnoblobinclude\</IntDir>
     <NMakeBuildCommandLine>cd $(SolutionDir)
-$(ProjectDir)..\..\..\tools\FastBuild\FBuild.exe SpanMultipleSrcDirsFBNoBlobInclude_Debug_FastBuild_NoBlob_vs2017_win64 -ide -summary -wait -config $(SolutionName).bff </NMakeBuildCommandLine>
+$(ProjectDir)..\..\..\tools\FastBuild\Windows-x64\FBuild.exe SpanMultipleSrcDirsFBNoBlobInclude_Debug_FastBuild_NoBlob_vs2017_win64 -ide -summary -wait -config $(SolutionName).bff </NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>cd $(SolutionDir)
-$(ProjectDir)..\..\..\tools\FastBuild\FBuild.exe -clean SpanMultipleSrcDirsFBNoBlobInclude_Debug_FastBuild_NoBlob_vs2017_win64 -ide -summary -wait -config $(SolutionName).bff </NMakeReBuildCommandLine>
+$(ProjectDir)..\..\..\tools\FastBuild\Windows-x64\FBuild.exe -clean SpanMultipleSrcDirsFBNoBlobInclude_Debug_FastBuild_NoBlob_vs2017_win64 -ide -summary -wait -config $(SolutionName).bff </NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>del "build\debug_fastbuild_noblob_vs2017\spanmultiplesrcdirsfbnoblobinclude\*unity*.cpp" >NUL 2>NUL
 del "build\debug_fastbuild_noblob_vs2017\spanmultiplesrcdirsfbnoblobinclude\*.obj" >NUL 2>NUL
 del "build\debug_fastbuild_noblob_vs2017\spanmultiplesrcdirsfbnoblobinclude\*.a" >NUL 2>NUL
@@ -100,9 +100,9 @@ del "output\debug_fastbuild_noblob_vs2017\spanmultiplesrcdirsfbnoblobinclude.pdb
     <OutDir>output\release_fastbuild_noblob_vs2017\</OutDir>
     <IntDir>build\release_fastbuild_noblob_vs2017\spanmultiplesrcdirsfbnoblobinclude\</IntDir>
     <NMakeBuildCommandLine>cd $(SolutionDir)
-$(ProjectDir)..\..\..\tools\FastBuild\FBuild.exe SpanMultipleSrcDirsFBNoBlobInclude_Release_FastBuild_NoBlob_vs2017_win64 -ide -summary -wait -config $(SolutionName).bff </NMakeBuildCommandLine>
+$(ProjectDir)..\..\..\tools\FastBuild\Windows-x64\FBuild.exe SpanMultipleSrcDirsFBNoBlobInclude_Release_FastBuild_NoBlob_vs2017_win64 -ide -summary -wait -config $(SolutionName).bff </NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>cd $(SolutionDir)
-$(ProjectDir)..\..\..\tools\FastBuild\FBuild.exe -clean SpanMultipleSrcDirsFBNoBlobInclude_Release_FastBuild_NoBlob_vs2017_win64 -ide -summary -wait -config $(SolutionName).bff </NMakeReBuildCommandLine>
+$(ProjectDir)..\..\..\tools\FastBuild\Windows-x64\FBuild.exe -clean SpanMultipleSrcDirsFBNoBlobInclude_Release_FastBuild_NoBlob_vs2017_win64 -ide -summary -wait -config $(SolutionName).bff </NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>del "build\release_fastbuild_noblob_vs2017\spanmultiplesrcdirsfbnoblobinclude\*unity*.cpp" >NUL 2>NUL
 del "build\release_fastbuild_noblob_vs2017\spanmultiplesrcdirsfbnoblobinclude\*.obj" >NUL 2>NUL
 del "build\release_fastbuild_noblob_vs2017\spanmultiplesrcdirsfbnoblobinclude\*.a" >NUL 2>NUL
