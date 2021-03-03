@@ -24,9 +24,6 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@v2
 
-      - name: Clean package cache as a temporary workaround for actions/setup-dotnet#155
-        run: dotnet nuget locals all --clear 
-
       - name: Bootstrap.bat ${{ matrix.configuration }}
         if: runner.os == 'Windows'
         shell: cmd
