@@ -19,7 +19,7 @@ set -e
 
 CURRENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
-SHARPMAKE_MAIN="${1:-"$CURRENT_DIR/Sharpmake.Main.sharpmake.cs"}"
+SHARPMAKE_MAIN="${1:-"Sharpmake.Main.sharpmake.cs"}"
 
 which dotnet > /dev/null
 DOTNET_FOUND=$?
@@ -32,7 +32,7 @@ SHARPMAKE_OPTIM=${2:-"debug"}
 
 echo "Build and run sharpmake in $SHARPMAKE_OPTIM..."
 
-SM_CMD_RUN="dotnet run --verbosity m --project Sharpmake.Application/Sharpmake.Application.csproj --configuration $SHARPMAKE_OPTIM /sources\(\'${SHARPMAKE_MAIN}\'\) /verbose"
+SM_CMD_RUN="dotnet run --verbosity m --project Sharpmake.Application/Sharpmake.Application.csproj --configuration $SHARPMAKE_OPTIM \"/sources('${SHARPMAKE_MAIN}') /verbose\""
 echo $SM_CMD_RUN
 eval $SM_CMD_RUN
 if [ $? -ne 0 ]; then
