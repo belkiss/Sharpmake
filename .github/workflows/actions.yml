@@ -45,9 +45,10 @@ jobs:
         run: ./CompileSharpmake.dotnet.sh Sharpmake.sln "${{ matrix.configuration }}"
 
       - name: GenerateMdbFiles.bat
-        if: runner.os == 'Windows'
+        if: runner.os == 'Windows' && matrix.configuration == 'release'
         shell: cmd
         run: GenerateMdbFiles.bat
+
       - name: UnitTest
         if: runner.os == 'Windows'
         run: dotnet test tmp/unittests/${{ matrix.configuration }}/Sharpmake.UnitTests.dll
