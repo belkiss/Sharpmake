@@ -844,7 +844,8 @@ namespace Sharpmake.Generators.VisualStudio
             //    Enable                                  ConformanceMode="true"                          /permissive-
             context.SelectOption
             (
-            Options.Option(Options.Vc.Compiler.ConformanceMode.Disable, () => { context.Options["ConformanceMode"] = FileGeneratorUtilities.RemoveLineTag; context.CommandLineOptions["ConformanceMode"] = FileGeneratorUtilities.RemoveLineTag; }),
+            Options.Option(Options.Vc.Compiler.ConformanceMode.Default, () => { context.Options["ConformanceMode"] = "Default"; context.CommandLineOptions["ConformanceMode"] = FileGeneratorUtilities.RemoveLineTag; }),
+            Options.Option(Options.Vc.Compiler.ConformanceMode.Disable, () => { context.Options["ConformanceMode"] = "false"; context.CommandLineOptions["ConformanceMode"] = "/permissive"; }),
             Options.Option(Options.Vc.Compiler.ConformanceMode.Enable, () => { context.Options["ConformanceMode"] = "true"; context.CommandLineOptions["ConformanceMode"] = "/permissive-"; })
             );
 

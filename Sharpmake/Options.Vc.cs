@@ -920,10 +920,12 @@ namespace Sharpmake
                 /// </remarks>
                 public enum ConformanceMode
                 {
+                    [Default]
+                    Default,
+
                     /// <summary>
                     /// No
                     /// </summary>
-                    [Default]
                     Disable,
 
                     /// <summary>
