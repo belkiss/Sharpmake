@@ -50,7 +50,6 @@ jobs:
         run: GenerateMdbFiles.bat
 
       - name: UnitTest
-        if: runner.os == 'Windows'
         run: dotnet test tmp/unittests/${{ matrix.configuration }}/Sharpmake.UnitTests.dll
 
       - name: RegressionTest
