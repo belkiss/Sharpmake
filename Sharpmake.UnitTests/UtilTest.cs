@@ -1166,9 +1166,18 @@ namespace Sharpmake.UnitTests
             string[] pathParams2 = { "F:", "SharpMake", "sharpmake", "Sharpmake.Generators", "Properties", "AssemblyInfo.cs" };
             string[] pathParams3 = { "F:", "SharpMake", "sharpmake", "tmp", "obj", "debug", "configureorder", "ConfigureOrder.dll" };
 
-            Assert.AreEqual(Path.Combine(pathParams1), Util.RegexPathCombine(pathParams1));
-            Assert.AreEqual(Path.Combine(pathParams2), Util.RegexPathCombine(pathParams2));
-            Assert.AreEqual(Path.Combine(pathParams3), Util.RegexPathCombine(pathParams3));
+            if (Util.IsRunningOnUnix())
+            {
+                Assert.AreEqual(Path.Combine(pathParams1), Util.RegexPathCombine(pathParams1));
+                Assert.AreEqual(Path.Combine(pathParams2), Util.RegexPathCombine(pathParams2));
+                Assert.AreEqual(Path.Combine(pathParams3), Util.RegexPathCombine(pathParams3));
+            }
+            else
+            {
+                Assert.AreEqual(string.Join(@"\\", pathParams1), Util.RegexPathCombine(pathParams1));
+                Assert.AreEqual(string.Join(@"\\", pathParams2), Util.RegexPathCombine(pathParams2));
+                Assert.AreEqual(string.Join(@"\\", pathParams3), Util.RegexPathCombine(pathParams3));
+            }
         }
 
         /// <summary>
