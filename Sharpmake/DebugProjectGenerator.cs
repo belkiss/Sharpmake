@@ -248,7 +248,9 @@ namespace Sharpmake
             conf.CsprojUserFile.StartAction = Project.Configuration.CsprojUserFileSettings.StartActionSetting.Program;
 
             string quote = "\'"; // Use single quote that is cross platform safe
-            conf.CsprojUserFile.StartArguments = $@"/sources(@{quote}{string.Join(";", MainSources)}{quote}) {startArguments}";
+            string lbracket = Util.IsRunningOnUnix() ? @"\(" : @"("; // When running in unix, we must escape brackets as well
+            string rbracket = Util.IsRunningOnUnix() ? @"\)" : @")"; // When running in unix, we must escape brackets as well
+            conf.CsprojUserFile.StartArguments = $@"/sources{lbracket}@{quote}{string.Join(";", MainSources)}{quote}{rbracket} {startArguments}";
             conf.CsprojUserFile.StartProgram = sharpmakeApplicationExePath;
         }
     }

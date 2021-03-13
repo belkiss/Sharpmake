@@ -30,7 +30,7 @@ namespace Sharpmake
     public class Assembler
     {
         public const Options.CSharp.LanguageVersion SharpmakeScriptsCSharpVersion = Options.CSharp.LanguageVersion.CSharp7;
-        public const DotNetFramework SharpmakeDotNetFramework = DotNetFramework.v4_7_2;
+        public const DotNetFramework SharpmakeDotNetFramework = DotNetFramework.net5_0;
 
         /// <summary>
         /// Extra user assembly to use while compiling
@@ -447,6 +447,7 @@ namespace Sharpmake
                 OutputKind.DynamicallyLinkedLibrary,
                 optimizationLevel: (builderContext == null || builderContext.DebugScripts) ? OptimizationLevel.Debug : OptimizationLevel.Release,
                 warningLevel: 4
+                //, deterministic: true
             );
             var assemblyName = libraryFile != null ? Path.GetFileNameWithoutExtension(libraryFile) : $"Sharpmake_{new Random().Next():X8}" + GetHashCode();
             var compilation = CSharpCompilation.Create(assemblyName, syntaxTrees, portableExecutableReferences, compilationOptions);
