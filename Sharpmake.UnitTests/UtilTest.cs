@@ -269,8 +269,8 @@ namespace Sharpmake.UnitTests
         {
             string temp = Util.GetCapitalizedPath(Path.GetTempPath());
 
-            var tempDirectory1 = Directory.CreateDirectory(temp + @"\test1");
-            var tempDirectory2 = Directory.CreateDirectory(temp + @"\test2");
+            var tempDirectory1 = Directory.CreateDirectory(Path.Combine(temp, "test1"));
+            var tempDirectory2 = Directory.CreateDirectory(Path.Combine(temp, "test2"));
 
             OrderableStrings paths = new OrderableStrings
             {
@@ -298,7 +298,7 @@ namespace Sharpmake.UnitTests
         [Test]
         public void GetCurrentSharpMakeFileInfo()
         {
-            string[] listFileInfo = Util.GetCurrentSharpmakeFileInfo().FullName.Split('\\');
+            string[] listFileInfo = Util.GetCurrentSharpmakeFileInfo().FullName.Split(Util._pathSeparators);
 
             Assert.AreEqual("UtilTest.cs", listFileInfo[listFileInfo.Length - 1]);
         }
@@ -1166,18 +1166,9 @@ namespace Sharpmake.UnitTests
             string[] pathParams2 = { "F:", "SharpMake", "sharpmake", "Sharpmake.Generators", "Properties", "AssemblyInfo.cs" };
             string[] pathParams3 = { "F:", "SharpMake", "sharpmake", "tmp", "obj", "debug", "configureorder", "ConfigureOrder.dll" };
 
-            if (Util.IsRunningInMono())
-            {
-                Assert.AreEqual(Path.Combine(pathParams1), Util.RegexPathCombine(pathParams1));
-                Assert.AreEqual(Path.Combine(pathParams2), Util.RegexPathCombine(pathParams2));
-                Assert.AreEqual(Path.Combine(pathParams3), Util.RegexPathCombine(pathParams3));
-            }
-            else
-            {
-                Assert.AreEqual(string.Join(@"\\", pathParams1), Util.RegexPathCombine(pathParams1));
-                Assert.AreEqual(string.Join(@"\\", pathParams2), Util.RegexPathCombine(pathParams2));
-                Assert.AreEqual(string.Join(@"\\", pathParams3), Util.RegexPathCombine(pathParams3));
-            }
+            Assert.AreEqual(Path.Combine(pathParams1), Util.RegexPathCombine(pathParams1));
+            Assert.AreEqual(Path.Combine(pathParams2), Util.RegexPathCombine(pathParams2));
+            Assert.AreEqual(Path.Combine(pathParams3), Util.RegexPathCombine(pathParams3));
         }
 
         /// <summary>

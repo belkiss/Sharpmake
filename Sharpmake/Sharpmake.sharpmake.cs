@@ -17,7 +17,7 @@ namespace SharpmakeGen
             CustomProperties.Add("RestoreAdditionalProjectSources", "https://api.nuget.org/v3/index.json");
 
             // workaround to be able to use Microsoft.Build.Utilities.Core from mono on unix platforms
-            NetCoreSdkGACAssemblyLookup = true;
+            //NetCoreSdkGACAssemblyLookup = true;
             // resolved runtime target assets should be copied locally.
             //CustomProperties.Add("CopyLocalRuntimeTargetAssets", "true");
             //CustomProperties.Add("CopyLocalLockFileAssemblies", "true");

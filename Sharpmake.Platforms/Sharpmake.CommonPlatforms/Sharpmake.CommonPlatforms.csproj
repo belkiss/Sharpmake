@@ -53,16 +53,16 @@
   </PropertyGroup>
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
   <ItemGroup>
-    <Compile Include="Android\AndroidBuildTargets.cs" />
-    <Compile Include="Android\AndroidPlatform.Vcxproj.Template.cs" />
-    <Compile Include="Android\AndroidPlatform.cs" />
-    <Compile Include="Android\GlobalSettings.cs" />
-    <Compile Include="Android\Util.cs" />
-    <Compile Include="Apple\BaseApplePlatform.Bff.Template.cs" />
-    <Compile Include="Apple\BaseApplePlatform.cs" />
-    <Compile Include="Apple\MacOsPlatform.cs" />
-    <Compile Include="Apple\iOsPlatform.Bff.Template.cs" />
-    <Compile Include="Apple\iOsPlatform.cs" />
+    <Compile Include="Android/AndroidBuildTargets.cs" />
+    <Compile Include="Android/AndroidPlatform.Vcxproj.Template.cs" />
+    <Compile Include="Android/AndroidPlatform.cs" />
+    <Compile Include="Android/GlobalSettings.cs" />
+    <Compile Include="Android/Util.cs" />
+    <Compile Include="Apple/BaseApplePlatform.Bff.Template.cs" />
+    <Compile Include="Apple/BaseApplePlatform.cs" />
+    <Compile Include="Apple/MacOsPlatform.cs" />
+    <Compile Include="Apple/iOsPlatform.Bff.Template.cs" />
+    <Compile Include="Apple/iOsPlatform.cs" />
     <Compile Include="BaseMicrosoftPlatform.Vcxproj.Template.cs" />
     <Compile Include="BaseMicrosoftPlatform.cs" />
     <Compile Include="BasePlatform.Vcxproj.Template.cs" />

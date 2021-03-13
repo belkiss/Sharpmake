@@ -33,7 +33,7 @@ if [ $DOTNET_FOUND -ne 0 ]; then
     exit $DOTNET_FOUND
 fi
 
-SOLUTION_PATH=${1:-"${CURRENT_DIR}/Sharpmake.sln"}
+SOLUTION_PATH=${1:-"Sharpmake.sln"}
 CONFIGURATION=${2:-"Debug"}
 PLATFORM=${3:-"Any CPU"}
 

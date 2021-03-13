@@ -53,11 +53,11 @@
   </PropertyGroup>
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
   <ItemGroup>
-    <Compile Include="Apple\XCWorkspace.Template.cs" />
-    <Compile Include="Apple\XCWorkspace.cs" />
-    <Compile Include="Apple\XCode.Util.cs" />
-    <Compile Include="Apple\XCodeProj.Template.cs" />
-    <Compile Include="Apple\XCodeProj.cs" />
+    <Compile Include="Apple/XCWorkspace.Template.cs" />
+    <Compile Include="Apple/XCWorkspace.cs" />
+    <Compile Include="Apple/XCode.Util.cs" />
+    <Compile Include="Apple/XCodeProj.Template.cs" />
+    <Compile Include="Apple/XCodeProj.cs" />
     <Compile Include="CompilerSettings.cs" />
     <Compile Include="FastBuild/Bff.Template.cs" />
     <Compile Include="FastBuild/Bff.Util.cs" />

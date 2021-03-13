@@ -135,8 +135,5 @@
     <PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" Version="2.3.2262-g94fae01e" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
   </ItemGroup>
-  <PropertyGroup>
-    <AssemblySearchPaths>$(AssemblySearchPaths);$(AssemblyFoldersConfigFileSearchPath);{GAC}</AssemblySearchPaths>
-  </PropertyGroup>
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
 </Project>
