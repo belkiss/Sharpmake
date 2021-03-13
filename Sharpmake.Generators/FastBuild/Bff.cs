@@ -71,8 +71,8 @@ namespace Sharpmake.Generators.FastBuild
                 Builder = builder;
                 Project = project;
                 ProjectDirectory = projectDir;
-                ProjectDirectoryCapitalized = Util.GetCapitalizedPath(projectDir);
-                ProjectSourceCapitalized = Util.GetCapitalizedPath(project.SourceRootPath);
+                ProjectDirectoryCapitalized = Util.PathMakeStandard(projectDir);
+                ProjectSourceCapitalized = Util.PathMakeStandard(project.SourceRootPath);
                 ProjectConfigurations = projectConfigurations as IReadOnlyList<Project.Configuration>;
                 PresentPlatforms = ProjectConfigurations.Select(conf => conf.Platform).Distinct().ToDictionary(p => p, PlatformRegistry.Get<IPlatformBff>);
             }
@@ -826,7 +826,7 @@ namespace Sharpmake.Generators.FastBuild
                             if (isNoBlobImplicitConfig && isDefaultTuple)
                             {
                                 fullInputPaths.Add(context.ProjectSourceCapitalized);
-                                fullInputPaths.AddRange(project.AdditionalSourceRootPaths.Select(Util.GetCapitalizedPath));
+                                fullInputPaths.AddRange(project.AdditionalSourceRootPaths.Select(Util.PathMakeStandard));
 
                                 excludedSourceFiles.AddRange(filesInNonDefaultSection.Select(f => f.FileName));
                             }
@@ -834,7 +834,7 @@ namespace Sharpmake.Generators.FastBuild
                             if (isDefaultTuple && conf.FastBuildBlobbingStrategy == Project.Configuration.InputFileStrategy.Exclude && conf.FastBuildBlobbed)
                             {
                                 // Adding the folders excluded from unity to the folders to build without unity(building each file individually)
-                                fullInputPaths.AddRange(project.SourcePathsBlobExclude.Select(Util.GetCapitalizedPath));
+                                fullInputPaths.AddRange(project.SourcePathsBlobExclude.Select(Util.PathMakeStandard));
                             }
 
                             if (project.SourceFilesFiltersRegex.Count == 0)
@@ -1720,14 +1720,14 @@ namespace Sharpmake.Generators.FastBuild
             if (unityCount > 0)
                 fastBuildUnityCount = unityCount.ToString(CultureInfo.InvariantCulture);
 
-            var fastbuildUnityInputExcludePathList = new Strings(project.SourcePathsBlobExclude.Select(Util.GetCapitalizedPath));
+            var fastbuildUnityInputExcludePathList = new Strings(project.SourcePathsBlobExclude.Select(Util.PathMakeStandard));
 
             bool srcDirsAreEmpty = true;
             var items = new List<string>();
 
             // Fastbuild will process as unity all files contained in source Root folder and all additional roots.
             var unityInputPaths = new Strings(context.ProjectSourceCapitalized);
-            unityInputPaths.AddRange(project.AdditionalSourceRootPaths.Select(Util.GetCapitalizedPath));
+            unityInputPaths.AddRange(project.AdditionalSourceRootPaths.Select(Util.PathMakeStandard));
 
             foreach (var file in sourceFiles)
             {

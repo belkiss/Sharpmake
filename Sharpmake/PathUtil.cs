@@ -40,15 +40,15 @@ namespace Sharpmake
 
         public static string PathMakeStandard(string path)
         {
-            return PathMakeStandard(path, !Util.IsRunningOnUnix());
-        }
-
-        public static string PathMakeStandard(string path, bool forceToLower)
-        {
             // cleanup the path by replacing the other separator by the correct one for this OS
             // then trim every trailing separators
-            var standardPath = path.Replace(OtherSeparator, Path.DirectorySeparatorChar).TrimEnd(Path.DirectorySeparatorChar);
-            return forceToLower ? standardPath.ToLower() : standardPath;
+            return path.Replace(OtherSeparator, Path.DirectorySeparatorChar).TrimEnd(Path.DirectorySeparatorChar);
+        }
+
+        [Obsolete("Making a path standard doesn't allow forcing to lower argument anymore", true)]
+        public static string PathMakeStandard(string path, bool forceToLower)
+        {
+            return null;
         }
 
         public static string EnsureTrailingSeparator(string path)
@@ -511,10 +511,6 @@ namespace Sharpmake
             paths = paths.Select(path => ResolvePath(root, path));
         }
 
-        internal static void ResolvePathAndFixCase(string root, ref IEnumerable<string> paths)
-        {
-            paths = paths.Select(path => ResolvePathAndFixCase(root, path));
-        }
 
         [Flags]
         internal enum KeyValuePairResolveType
@@ -524,7 +520,7 @@ namespace Sharpmake
             ResolveAll = ResolveKey | ResolveValue
         }
 
-        internal static void ResolvePathAndFixCase(string root, KeyValuePairResolveType resolveType, ref HashSet<KeyValuePair<string, string>> paths)
+        internal static void ResolvePath(string root, KeyValuePairResolveType resolveType, ref HashSet<KeyValuePair<string, string>> paths)
         {
             if (paths.Count == 0)
                 return;
@@ -535,10 +531,10 @@ namespace Sharpmake
                 string value = keyValuePair.Value;
 
                 if (resolveType.HasFlag(KeyValuePairResolveType.ResolveKey))
-                    key = ResolvePathAndFixCase(root, key);
+                    key = ResolvePath(root, key);
 
                 if (resolveType.HasFlag(KeyValuePairResolveType.ResolveValue))
-                    value = ResolvePathAndFixCase(root, value);
+                    value = ResolvePath(root, value);
 
                 if (keyValuePair.Key != key || keyValuePair.Value != value)
                 {
@@ -558,16 +554,6 @@ namespace Sharpmake
             }
         }
 
-        internal static void ResolvePathAndFixCase(string root, ref Strings paths)
-        {
-            List<string> sortedPaths = paths.Values;
-            foreach (string path in sortedPaths)
-            {
-                string fixedCase = ResolvePathAndFixCase(root, path);
-                paths.UpdateValue(path, fixedCase);
-            }
-        }
-
         public static void ResolvePath(string root, ref OrderableStrings paths)
         {
             for (int i = 0; i < paths.Count; ++i)
@@ -578,35 +564,14 @@ namespace Sharpmake
             paths.Sort();
         }
 
-        internal static void ResolvePathAndFixCase(string root, ref OrderableStrings paths)
-        {
-            for (int i = 0; i < paths.Count; ++i)
-            {
-                string fixedCase = ResolvePathAndFixCase(root, paths[i]);
-                i = paths.SetOrRemoveAtIndex(i, fixedCase);
-            }
-            paths.Sort();
-        }
-
         public static void ResolvePath(string root, ref string path)
         {
             path = ResolvePath(root, path);
         }
 
-        internal static void ResolvePathAndFixCase(string root, ref string path)
-        {
-            path = ResolvePathAndFixCase(root, path);
-        }
-
         public static string ResolvePath(string root, string path)
         {
             return Util.PathGetAbsolute(root, Util.PathMakeStandard(path));
-        }
-
-        internal static string ResolvePathAndFixCase(string root, string path)
-        {
-            string resolvedPath = ResolvePath(root, path);
-            return GetProperFilePathCapitalization(resolvedPath);
         }
 
 
@@ -772,9 +737,9 @@ namespace Sharpmake
         public static string ReplaceHeadPath(this string fullInputPath, string inputHeadPath, string replacementHeadPath)
         {
             // Normalize paths before comparing and combining them, to prevent false mismatch between '\\' and '/'.
-            fullInputPath = Util.PathMakeStandard(fullInputPath, false);
-            inputHeadPath = Util.PathMakeStandard(inputHeadPath, false);
-            replacementHeadPath = Util.PathMakeStandard(replacementHeadPath, false);
+            fullInputPath = Util.PathMakeStandard(fullInputPath);
+            inputHeadPath = Util.PathMakeStandard(inputHeadPath);
+            replacementHeadPath = Util.PathMakeStandard(replacementHeadPath);
 
             inputHeadPath = EnsureTrailingSeparator(inputHeadPath);
 
